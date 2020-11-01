@@ -120,6 +120,7 @@
     <Compile Include="Managers\DetailContextManager.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\DetailViewHost.cs" />
     <Compile Include="Utilities\Accessors.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,8 +138,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

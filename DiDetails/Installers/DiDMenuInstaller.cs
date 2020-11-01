@@ -2,6 +2,7 @@
 using SiraUtil;
 using IPA.Logging;
 using DiDetails.Managers;
+using DiDetails.UI;
 
 namespace DiDetails.Installers
 {
@@ -17,6 +18,7 @@ namespace DiDetails.Installers
         public override void InstallBindings()
         {
             Container.BindLoggerAsSiraLogger(_logger);
+            Container.BindInterfacesAndSelfTo<DetailViewHost>().AsSingle();
             Container.BindInterfacesAndSelfTo<DetailContextManager>().AsSingle();
         }
     }
