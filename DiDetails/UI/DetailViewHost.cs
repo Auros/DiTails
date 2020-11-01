@@ -7,8 +7,8 @@ using DiDetails.Managers;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using BeatSaberMarkupLanguage;
-using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Parser;
+using BeatSaberMarkupLanguage.Attributes;
 
 namespace DiDetails.UI
 {
@@ -45,16 +45,16 @@ namespace DiDetails.UI
         {
             if (!_didParse)
             {
-                _siraLog.Info("Starting Parsing Detail View BSML. Getting Manifest Stream");
+                _siraLog.Debug("Starting Parsing Detail View BSML. Getting Manifest Stream");
                 using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DiDetails.Views.detail-view.bsml"))
                 using (StreamReader reader = new StreamReader(stream))
                 {
-                    _siraLog.Info("Reading Manifest Stream");
+                    _siraLog.Debug("Reading Manifest Stream");
                     _bsmlContent = await reader.ReadToEndAsync();
                 }
                 if (!string.IsNullOrWhiteSpace(_bsmlContent))
                 {
-                    _siraLog.Info("Parsing Details");
+                    _siraLog.Debug("Parsing Details");
                     BSMLParser.instance.Parse(_bsmlContent, standardLevelDetailViewController.gameObject, this);
                     _didParse = true;
                 }
@@ -67,12 +67,11 @@ namespace DiDetails.UI
 
         private void HideMenu()
         {
-            _siraLog.Info($"Hiding Menu");
+            
         }
 
         private async void MenuRequested(StandardLevelDetailViewController standardLevelDetailViewController, IDifficultyBeatmap difficultyBeatmap)
         {
-            _siraLog.Info($"Detail Request Received for {difficultyBeatmap.level.songName}");
             await Parse(standardLevelDetailViewController);
             parserParams?.EmitEvent("show-detail");
         }

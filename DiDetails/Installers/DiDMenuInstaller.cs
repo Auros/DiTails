@@ -17,7 +17,13 @@ namespace DiDetails.Installers
 
         public override void InstallBindings()
         {
-            Container.BindLoggerAsSiraLogger(_logger);
+            Container.BindLoggerAsSiraLogger(_logger,
+                #if DEBUG
+                true
+#else
+                false
+#endif
+                );
             Container.BindInterfacesAndSelfTo<DetailViewHost>().AsSingle();
             Container.BindInterfacesAndSelfTo<DetailContextManager>().AsSingle();
         }

@@ -47,7 +47,6 @@ namespace DiDetails.Managers
 
         private void ArtworkImageClicked(PointerEventData pointerEventData)
         {
-            _siraLog.Info("Clicked Cover Artwork. Sending Detail Request");
             DetailMenuRequested?.Invoke(_standardLevelDetailViewController, _standardLevelDetailViewController.selectedDifficultyBeatmap);
         }
 
