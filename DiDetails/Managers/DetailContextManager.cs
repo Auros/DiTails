@@ -14,7 +14,7 @@ namespace DiDetails.Managers
         private readonly StandardLevelDetailViewController _standardLevelDetailViewController;
 
         internal event Action BeatmapUnselected;
-        internal event Action<IDifficultyBeatmap> DetailMenuRequested;
+        internal event Action<StandardLevelDetailViewController, IDifficultyBeatmap> DetailMenuRequested;
 
         #region Initialization
 
@@ -48,7 +48,7 @@ namespace DiDetails.Managers
         private void ArtworkImageClicked(PointerEventData pointerEventData)
         {
             _siraLog.Info("Clicked Cover Artwork. Sending Detail Request");
-            DetailMenuRequested?.Invoke(_standardLevelDetailViewController.selectedDifficultyBeatmap);
+            DetailMenuRequested?.Invoke(_standardLevelDetailViewController, _standardLevelDetailViewController.selectedDifficultyBeatmap);
         }
 
         private void DetailViewDeactivated(bool removedFromHierarchy, bool screenSystemDisabling)

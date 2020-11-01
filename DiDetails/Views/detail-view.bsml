@@ -1,0 +1,9 @@
+﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
+  <modal size-delta-x="50" size-delta-y="30" show-event="show-detail" clickerino-offerino-closerino="true">
+    <vertical horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
+      <horizontal horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
+        <text text="Hello" align="Center" font-size="8" />
+      </horizontal>
+    </vertical>
+  </modal>
+</bg>

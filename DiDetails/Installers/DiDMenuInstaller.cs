@@ -1,8 +1,8 @@
 ﻿using Zenject;
 using SiraUtil;
 using IPA.Logging;
-using DiDetails.Managers;
 using DiDetails.UI;
+using DiDetails.Managers;
 
 namespace DiDetails.Installers
 {
