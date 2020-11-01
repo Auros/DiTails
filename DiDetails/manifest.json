@@ -1,0 +1,12 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
+  "id": "DiDetails",
+  "name": "DiDetails",
+  "author": "Auros",
+  "version": "1.0.0",
+  "description": "View extra details about a map!",
+  "gameVersion": "1.12.2",
+  "dependsOn": {
+    "BSIPA": "^4.0.0"
+  }
+}
