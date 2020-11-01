@@ -32,7 +32,8 @@ namespace DiDetails
                     // Upgrade the ImageView
                     var clickable = artwork.Upgrade<ImageView, ClickableImage>();
                     Accessors.Artwork(ref levelBar) = clickable;
-                });
+                })
+                .WithParameters(logger);
         }
 
         [OnEnable]
