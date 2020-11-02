@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <OutputType>Library</OutputType>
         <LangVersion>9</LangVersion>
         <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <LocalRefsDir Condition="Exists('..\Refs')">..\Refs</LocalRefsDir>
         <BeatSaberDir>$(LocalRefsDir)</BeatSaberDir>
         <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
@@ -16,24 +16,22 @@
         <FileVersion>$(ModVersion)</FileVersion>
         <InformationalVersion>$(ModVersion)</InformationalVersion>
     </PropertyGroup>
-
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DebugType>full</DebugType>
     </PropertyGroup>
-
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugType>pdbonly</DebugType>
     </PropertyGroup>
-
     <PropertyGroup Condition="$(DefineConstants.Contains('CIBuild')) OR '$(NCrunch)' == '1'">
         <DisableCopyToPlugins>True</DisableCopyToPlugins>
     </PropertyGroup>
-
     <PropertyGroup Condition="'$(NCrunch)' == '1'">
         <DisableCopyToPlugins>True</DisableCopyToPlugins>
         <DisableZipRelease>True</DisableZipRelease>
     </PropertyGroup>
-
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <NoWarn>1701;1702;0649</NoWarn>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="BeatSaberModdingTools.Tasks">
             <Version>1.2.3</Version>
@@ -69,10 +67,10 @@
             <Private>False</Private>
         </Reference>
         <Reference Include="IPA.Loader">
-            <HintPath>$(BeatSaberDir)Beat Saber_Data\Managed\IPA.Loader.dll</HintPath>
+            <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\IPA.Loader.dll</HintPath>
         </Reference>
         <Reference Include="Main">
-            <HintPath>$(BeatSaberDir)Beat Saber_Data\Managed\Main.dll</HintPath>
+            <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Main.dll</HintPath>
         </Reference>
         <Reference Include="HMLib">
             <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\HMLib.dll</HintPath>
@@ -83,7 +81,7 @@
             <Private>False</Private>
         </Reference>
         <Reference Include="BSML">
-            <HintPath>$(BeatSaberDir)Plugins\BSML.dll</HintPath>
+            <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="SiraUtil">
@@ -91,21 +89,21 @@
             <Private>False</Private>
         </Reference>
         <Reference Include="Zenject">
-            <HintPath>$(BeatSaberDir)Beat Saber_Data\Managed\Zenject.dll</HintPath>
+            <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Zenject.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Zenject-usage">
-            <HintPath>$(BeatSaberDir)Beat Saber_Data\Managed\Zenject-usage.dll</HintPath>
+            <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Zenject-usage.dll</HintPath>
             <Private>False</Private>
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="manifest.json"/>
-        <EmbeddedResource Include="Views\*.bsml"/>
+        <EmbeddedResource Include="manifest.json" />
+        <EmbeddedResource Include="Views\*.bsml" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')"/>
-        <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')"/>
-        <None Include="DiDetails.csproj.user" Condition="Exists('DiDetails.csproj.user')"/>
+        <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
+        <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
+        <None Include="DiDetails.csproj.user" Condition="Exists('DiDetails.csproj.user')" />
     </ItemGroup>
 </Project>
