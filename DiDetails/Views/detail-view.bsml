@@ -1,9 +1,32 @@
-﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
-  <modal size-delta-x="50" size-delta-y="30" show-event="show-detail" clickerino-offerino-closerino="true">
-    <vertical horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
-      <horizontal horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
-        <text text="Hello" align="Center" font-size="8" />
-      </horizontal>
-    </vertical>
+<bg id="root" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
+  <modal id="main-modal" size-delta-x="80" size-delta-y="45" show-event="show-detail" hide-event="hide-detail" clickerino-offerino-closerino="true">
+    <horizontal pref-width="80" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
+      <vertical pref-width="20" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
+        <text text="Panel 1" align="Center" font-size="5" />
+      </vertical>
+      <vertical pref-width="40" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
+        <vertical pref-height="30">
+          <text text="Panel 2a" align="Center" font-size="5" />
+        </vertical>
+        <horizontal pref-height="15">
+          <button text="OK" event-click="hide-detail" pref-width="20" />
+        </horizontal>
+      </vertical>
+      <vertical pref-width="20" pref-height="45" pad="1">
+        <vertical pref-height="22" pad="2" bg="round-rect-panel" bg-color="red">
+          <text id="voting-text" text="Vote" align="Center" font-size="4" />
+          <vertical bg="round-rect-panel" bg-color="grey" pad="1">
+            <clickable-image id="voting-upvote-image" pref-width="10" pref-height="10" preserve-aspect="true" />
+          </vertical>
+          <vertical bg="round-rect-panel" bg-color="grey" pad="1">
+            <clickable-image id="voting-downvote-image" pref-width="10" pref-height="10" preserve-aspect="true" />
+          </vertical>
+        </vertical>
+        <vertical pref-height="10" pad="1">
+          <text text="Rating" font-size="3" align="Center" />
+          <text text="91%" font-size="7" font-color="green" align="Center" />
+        </vertical>
+      </vertical>
+    </horizontal>
   </modal>
 </bg>

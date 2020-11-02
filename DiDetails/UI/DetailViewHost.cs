@@ -1,6 +1,7 @@
 using System;
 using Zenject;
 using System.IO;
+using UnityEngine;
 using SiraUtil.Tools;
 using System.Reflection;
 using DiDetails.Managers;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.Attributes;
+using BeatSaberMarkupLanguage.Components;
 
 namespace DiDetails.UI
 {
@@ -17,6 +19,8 @@ namespace DiDetails.UI
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private bool _didParse;
+        private bool _didSetupVote;
+
         private string? _bsmlContent;
         private readonly SiraLog _siraLog;
         private readonly DetailContextManager _detailContextManager;
@@ -45,7 +49,8 @@ namespace DiDetails.UI
         {
             if (!_didParse)
             {
-                _siraLog.Debug("Starting Parsing Detail View BSML. Getting Manifest Stream");
+                _siraLog.Debug("Doing Initial BSML Parsing of the Detail View");
+                _siraLog.Debug("Getting Manifest Stream");
                 using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DiDetails.Views.detail-view.bsml"))
                 using (var reader = new StreamReader(stream))
                 {
@@ -56,7 +61,27 @@ namespace DiDetails.UI
                 {
                     _siraLog.Debug("Parsing Details");
                     BSMLParser.instance.Parse(_bsmlContent, standardLevelDetailViewController.gameObject, this);
+                    _siraLog.Debug("Parsing Complete");
                     _didParse = true;
+                }
+            }
+        }
+
+        private void SetupVotingButtons()
+        {
+            if (!_didSetupVote)
+            {
+                if (votingUpvoteImage != null && votingDownvoteImage != null)
+                {
+                    votingUpvoteImage.SetImage("DiDetails.Resources.arrow.png");
+                    votingDownvoteImage.SetImage("DiDetails.Resources.arrow.png");
+                    votingUpvoteImage.DefaultColor = new Color(0.388f, 1f, 0.388f);
+                    votingDownvoteImage.DefaultColor = new Color(1f, 0.188f, 0.188f);
+
+                    votingUpvoteImage.transform.localScale = new Vector2(0.9f, 1f);
+                    votingDownvoteImage.transform.localScale = new Vector2(0.9f, -1f);
+
+                    _didSetupVote = true;
                 }
             }
         }
@@ -67,12 +92,19 @@ namespace DiDetails.UI
 
         private void HideMenu()
         {
-            
+            _siraLog.Info("Hiding Menu");
+            if (_didParse && rootTransform != null && mainModalTransform != null)
+            {
+                mainModalTransform.transform.SetParent(rootTransform.transform);
+            }
+            parserParams?.EmitEvent("hide-detail");
         }
 
         private async void MenuRequested(StandardLevelDetailViewController standardLevelDetailViewController, IDifficultyBeatmap difficultyBeatmap)
         {
             await Parse(standardLevelDetailViewController);
+            SetupVotingButtons();
+
             parserParams?.EmitEvent("show-detail");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("E"));
         }
@@ -83,6 +115,18 @@ namespace DiDetails.UI
 
         [UIParams]
         protected BSMLParserParams? parserParams;
+
+        [UIComponent("root")]
+        protected RectTransform? rootTransform;
+
+        [UIComponent("main-modal")]
+        protected RectTransform? mainModalTransform;
+
+        [UIComponent("voting-upvote-image")]
+        protected ClickableImage? votingUpvoteImage;
+
+        [UIComponent("voting-downvote-image")]
+        protected ClickableImage? votingDownvoteImage;
 
         #endregion
     }
