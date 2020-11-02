@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Zenject;
 using SiraUtil.Tools;
 using DiDetails.Utilities;
@@ -13,8 +13,8 @@ namespace DiDetails.Managers
         private readonly ClickableImage _artworkImage;
         private readonly StandardLevelDetailViewController _standardLevelDetailViewController;
 
-        internal event Action BeatmapUnselected;
-        internal event Action<StandardLevelDetailViewController, IDifficultyBeatmap> DetailMenuRequested;
+        internal event Action? BeatmapUnselected;
+        internal event Action<StandardLevelDetailViewController, IDifficultyBeatmap>? DetailMenuRequested;
 
         #region Initialization
 

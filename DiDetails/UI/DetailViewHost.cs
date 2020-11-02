@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Zenject;
 using System.IO;
 using SiraUtil.Tools;
@@ -14,10 +14,10 @@ namespace DiDetails.UI
 {
     internal class DetailViewHost : INotifyPropertyChanged, IInitializable, IDisposable
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private bool _didParse;
-        private string _bsmlContent;
+        private string? _bsmlContent;
         private readonly SiraLog _siraLog;
         private readonly DetailContextManager _detailContextManager;
 
@@ -47,7 +47,7 @@ namespace DiDetails.UI
             {
                 _siraLog.Debug("Starting Parsing Detail View BSML. Getting Manifest Stream");
                 using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DiDetails.Views.detail-view.bsml"))
-                using (StreamReader reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream))
                 {
                     _siraLog.Debug("Reading Manifest Stream");
                     _bsmlContent = await reader.ReadToEndAsync();
@@ -74,6 +74,7 @@ namespace DiDetails.UI
         {
             await Parse(standardLevelDetailViewController);
             parserParams?.EmitEvent("show-detail");
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("E"));
         }
 
         #endregion
@@ -81,7 +82,7 @@ namespace DiDetails.UI
         #region BSML Variables
 
         [UIParams]
-        protected BSMLParserParams parserParams;
+        protected BSMLParserParams? parserParams;
 
         #endregion
     }

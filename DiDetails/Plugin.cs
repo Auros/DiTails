@@ -1,4 +1,4 @@
-﻿using IPA;
+using IPA;
 using HMUI;
 using SiraUtil;
 using SiraUtil.Zenject;
@@ -12,7 +12,7 @@ namespace DiDetails
     [Plugin(RuntimeOptions.DynamicInit)]
     public class Plugin
     {
-        internal static IPALogger Log { get; private set; }
+        internal static IPALogger? Log { get; private set; }
 
         [Init]
         public Plugin(IPALogger logger, Zenjector zenjector)
@@ -24,14 +24,16 @@ namespace DiDetails
                 .Mutate<StandardLevelDetailViewController>((ctx, obj) =>
                 {
                     // Get the ImageView reference on the view controller
-                    var viewController = obj as StandardLevelDetailViewController;
-                    var detailView = Accessors.DetailView(ref viewController);
-                    var levelBar = Accessors.LevelBar(ref detailView);
-                    var artwork = Accessors.Artwork(ref levelBar);
+                    if (obj is StandardLevelDetailViewController viewController)
+                    {
+                        var detailView = Accessors.DetailView(ref viewController);
+                        var levelBar = Accessors.LevelBar(ref detailView);
+                        var artwork = Accessors.Artwork(ref levelBar);
 
-                    // Upgrade the ImageView
-                    var clickable = artwork.Upgrade<ImageView, ClickableImage>();
-                    Accessors.Artwork(ref levelBar) = clickable;
+                        // Upgrade the ImageView
+                        var clickable = artwork.Upgrade<ImageView, ClickableImage>();
+                        Accessors.Artwork(ref levelBar) = clickable;
+                    }
                 })
                 .WithParameters(logger);
         }
