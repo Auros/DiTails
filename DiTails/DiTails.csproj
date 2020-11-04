@@ -10,11 +10,12 @@
         <BeatSaberDir>$(LocalRefsDir)</BeatSaberDir>
         <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
         <Copyright>Copyright © Auros 2020</Copyright>
-        <AssemblyName>DiDetails</AssemblyName>
+        <AssemblyName>DiTails</AssemblyName>
         <ModVersion>1.0.0</ModVersion>
         <AssemblyVersion>$(ModVersion)</AssemblyVersion>
         <FileVersion>$(ModVersion)</FileVersion>
         <InformationalVersion>$(ModVersion)</InformationalVersion>
+        <RootNamespace>DiTails</RootNamespace>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DebugType>full</DebugType>
@@ -112,6 +113,6 @@
     <ItemGroup>
         <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
         <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
-        <None Include="DiDetails.csproj.user" Condition="Exists('DiDetails.csproj.user')" />
+        <None Include="DiTails.csproj.user" Condition="Exists('DiTails.csproj.user')" />
     </ItemGroup>
 </Project>

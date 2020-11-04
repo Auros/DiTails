@@ -1,7 +1,7 @@
 ﻿using HMUI;
 using IPA.Utilities;
 
-namespace DiDetails.Utilities
+namespace DiTails.Utilities
 {
     internal static class Accessors
     {

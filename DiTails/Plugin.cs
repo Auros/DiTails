@@ -2,12 +2,12 @@ using IPA;
 using HMUI;
 using SiraUtil;
 using SiraUtil.Zenject;
-using DiDetails.Installers;
+using DiTails.Installers;
 using IPALogger = IPA.Logging.Logger;
 using BeatSaberMarkupLanguage.Components;
-using Accessors = DiDetails.Utilities.Accessors;
+using Accessors = DiTails.Utilities.Accessors;
 
-namespace DiDetails
+namespace DiTails
 {
     [Plugin(RuntimeOptions.DynamicInit)]
     public class Plugin

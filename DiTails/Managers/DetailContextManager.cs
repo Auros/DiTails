@@ -1,11 +1,11 @@
 using System;
 using Zenject;
 using SiraUtil.Tools;
-using DiDetails.Utilities;
+using DiTails.Utilities;
 using UnityEngine.EventSystems;
 using BeatSaberMarkupLanguage.Components;
 
-namespace DiDetails.Managers
+namespace DiTails.Managers
 {
     internal sealed class DetailContextManager : IInitializable, IDisposable
     {

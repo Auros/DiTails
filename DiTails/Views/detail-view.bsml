@@ -1,10 +1,14 @@
 <bg id="root" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
-  <modal id="main-modal" size-delta-x="80" size-delta-y="45" show-event="show-detail" hide-event="hide-detail" clickerino-offerino-closerino="true">
-    <horizontal pref-width="80" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
-      <vertical pref-width="20" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
+  <modal id="main-modal" size-delta-x="100" size-delta-y="45" show-event="show-detail" hide-event="hide-detail" clickerino-offerino-closerino="true">
+    <horizontal pref-width="100" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
+      <!--Panel 1-->
+      <vertical pref-width="25" pref-height="45" child-align="MiddleCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
         <text text="Panel 1" align="Center" font-size="5" />
+        <button text="View Artwork" font-size="3" />
       </vertical>
-      <vertical pref-width="40" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
+
+      <!--Panel 2-->
+      <vertical pref-width="50" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
         <vertical pref-height="30">
           <text text="Panel 2a" align="Center" font-size="5" />
         </vertical>
@@ -12,7 +16,8 @@
           <button text="OK" event-click="hide-detail" pref-width="20" />
         </horizontal>
       </vertical>
-      <vertical pref-width="20" pref-height="45" pad="1">
+      
+      <vertical pref-width="25" pref-height="45" pad="1">
         <vertical pref-height="22" pad="2" bg="round-rect-panel" bg-color="red">
           <text id="voting-text" text="Vote" align="Center" font-size="4" />
           <vertical bg="round-rect-panel" bg-color="grey" pad="1">

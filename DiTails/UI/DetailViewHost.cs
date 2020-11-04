@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using SiraUtil.Tools;
 using System.Reflection;
-using DiDetails.Managers;
+using DiTails.Managers;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using BeatSaberMarkupLanguage;
@@ -12,7 +12,7 @@ using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 
-namespace DiDetails.UI
+namespace DiTails.UI
 {
     internal class DetailViewHost : INotifyPropertyChanged, IInitializable, IDisposable
     {
@@ -51,7 +51,7 @@ namespace DiDetails.UI
             {
                 _siraLog.Debug("Doing Initial BSML Parsing of the Detail View");
                 _siraLog.Debug("Getting Manifest Stream");
-                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DiDetails.Views.detail-view.bsml"))
+                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DiTails.Views.detail-view.bsml"))
                 using (var reader = new StreamReader(stream))
                 {
                     _siraLog.Debug("Reading Manifest Stream");
@@ -73,8 +73,8 @@ namespace DiDetails.UI
             {
                 if (votingUpvoteImage != null && votingDownvoteImage != null)
                 {
-                    votingUpvoteImage.SetImage("DiDetails.Resources.arrow.png");
-                    votingDownvoteImage.SetImage("DiDetails.Resources.arrow.png");
+                    votingUpvoteImage.SetImage("DiTails.Resources.arrow.png");
+                    votingDownvoteImage.SetImage("DiTails.Resources.arrow.png");
                     votingUpvoteImage.DefaultColor = new Color(0.388f, 1f, 0.388f);
                     votingDownvoteImage.DefaultColor = new Color(1f, 0.188f, 0.188f);
 
@@ -92,7 +92,6 @@ namespace DiDetails.UI
 
         private void HideMenu()
         {
-            _siraLog.Info("Hiding Menu");
             if (_didParse && rootTransform != null && mainModalTransform != null)
             {
                 mainModalTransform.transform.SetParent(rootTransform.transform);

@@ -1,10 +1,10 @@
 ﻿using Zenject;
 using SiraUtil;
 using IPA.Logging;
-using DiDetails.UI;
-using DiDetails.Managers;
+using DiTails.UI;
+using DiTails.Managers;
 
-namespace DiDetails.Installers
+namespace DiTails.Installers
 {
     internal sealed class DiDMenuInstaller : Installer<Logger, DiDMenuInstaller>
     {

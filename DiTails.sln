@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiDetails", "DiDetails\DiDetails.csproj", "{B1DF1BB4-2A6D-4009-8155-0D20522B0E50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiTails", "DiTails\DiTails.csproj", "{B1DF1BB4-2A6D-4009-8155-0D20522B0E50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
