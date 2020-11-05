@@ -1,18 +1,21 @@
-﻿using Zenject;
+using SemVer;
+using Zenject;
 using SiraUtil;
-using IPA.Logging;
 using DiTails.UI;
+using IPA.Logging;
 using DiTails.Managers;
 
 namespace DiTails.Installers
 {
-    internal sealed class DiDMenuInstaller : Installer<Logger, DiDMenuInstaller>
+    internal sealed class DiDMenuInstaller : Installer<Logger, Version, DiDMenuInstaller>
     {
         private readonly Logger _logger;
+        private readonly Version _version;
 
-        internal DiDMenuInstaller(Logger logger)
+        internal DiDMenuInstaller(Logger logger, Version version)
         {
             _logger = logger;
+            _version = version;
         }
 
         public override void InstallBindings()
@@ -25,7 +28,9 @@ namespace DiTails.Installers
 #endif
                 );
             Container.BindInterfacesAndSelfTo<DetailViewHost>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelDataService>().AsSingle();
             Container.BindInterfacesAndSelfTo<DetailContextManager>().AsSingle();
+            Container.BindInstance(_version).WithId("dev.auros.ditails.version").AsSingle();
         }
     }
 }

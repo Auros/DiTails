@@ -6,6 +6,7 @@ using DiTails.Installers;
 using IPALogger = IPA.Logging.Logger;
 using BeatSaberMarkupLanguage.Components;
 using Accessors = DiTails.Utilities.Accessors;
+using IPA.Loader;
 
 namespace DiTails
 {
@@ -15,7 +16,7 @@ namespace DiTails
         internal static IPALogger? Log { get; private set; }
 
         [Init]
-        public Plugin(IPALogger logger, Zenjector zenjector)
+        public Plugin(IPALogger logger, Zenjector zenjector, PluginMetadata metadata)
         {
             Log = logger;
 
@@ -35,7 +36,7 @@ namespace DiTails
                         Accessors.Artwork(ref levelBar) = clickable;
                     }
                 })
-                .WithParameters(logger);
+                .WithParameters(logger, metadata.Version);
         }
 
         [OnEnable]

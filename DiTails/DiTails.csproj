@@ -39,8 +39,16 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <Reference Include="BeatSaverSharp">
+          <HintPath>$(BeatSaberDir)\Libs\BeatSaverSharp.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
         <Reference Include="MediaLoader">
           <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\MediaLoader.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="SemVer">
+          <HintPath>$(BeatSaberDir)\Libs\SemVer.dll</HintPath>
           <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine">

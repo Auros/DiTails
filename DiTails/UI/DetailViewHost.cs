@@ -11,6 +11,7 @@ using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
+using System.Threading;
 
 namespace DiTails.UI
 {
@@ -20,17 +21,22 @@ namespace DiTails.UI
 
         private bool _didParse;
         private bool _didSetupVote;
+        private CancellationTokenSource _cts;
 
         private string? _bsmlContent;
         private readonly SiraLog _siraLog;
+        private readonly LevelDataService _levelDataService;
         private readonly DetailContextManager _detailContextManager;
 
         #region Initialization 
 
-        public DetailViewHost(SiraLog siraLog, DetailContextManager detailContextManager)
+        public DetailViewHost(SiraLog siraLog, LevelDataService levelDataService, DetailContextManager detailContextManager)
         {
             _siraLog = siraLog;
+            _levelDataService = levelDataService;
             _detailContextManager = detailContextManager;
+
+            _cts = new CancellationTokenSource();
         }
 
         public void Initialize()
@@ -92,6 +98,7 @@ namespace DiTails.UI
 
         private void HideMenu()
         {
+            _cts.Cancel();
             if (_didParse && rootTransform != null && mainModalTransform != null)
             {
                 mainModalTransform.transform.SetParent(rootTransform.transform);
@@ -99,14 +106,34 @@ namespace DiTails.UI
             parserParams?.EmitEvent("hide-detail");
         }
 
-        private async void MenuRequested(StandardLevelDetailViewController standardLevelDetailViewController, IDifficultyBeatmap difficultyBeatmap)
+        private void MenuRequested(StandardLevelDetailViewController standardLevelDetailViewController, IDifficultyBeatmap difficultyBeatmap)
+        {
+            _cts = new CancellationTokenSource();
+            _ = LoadMenu(standardLevelDetailViewController, difficultyBeatmap);
+        }
+
+        #endregion
+
+        private async Task LoadMenu(StandardLevelDetailViewController standardLevelDetailViewController, IDifficultyBeatmap difficultyBeatmap)
         {
             await Parse(standardLevelDetailViewController);
             SetupVotingButtons();
 
             parserParams?.EmitEvent("show-detail");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("E"));
+
+            var map = await _levelDataService.GetBeatmap(difficultyBeatmap, _cts.Token);
+            if (map != null)
+            {
+                _siraLog.Debug(map.Name);
+                _siraLog.Debug(map.Key);
+                _siraLog.Debug($"{map.Stats.UpVotes + -map.Stats.DownVotes}");
+            }
         }
+
+        #region Usage
+
+
 
         #endregion
 

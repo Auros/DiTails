@@ -12,6 +12,7 @@
       <!--Panel 2-->
       <vertical pref-width="50" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
         <vertical child-align="UpperCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
+          <text text="DiTails" align="Top" font-size="7" underlined="true" />
           <text text="Key | db2a" align="TopJustified" font-size="3" />
           <text text="Author | That Jeff Guy" align="TopJustified" font-size="3" />
           <text text="Mapper | Joetastic" align="TopJustified" font-size="3" />
@@ -28,10 +29,11 @@
         <vertical pref-height="22" pad="2" bg="round-rect-panel" bg-color="white">
           <text id="voting-text" text="Vote" align="Center" font-size="4" />
           <vertical bg="round-rect-panel" bg-color="grey" pad="1">
-            <clickable-image id="voting-upvote-image" pref-width="10" pref-height="10" preserve-aspect="true" />
+            <clickable-image id="voting-upvote-image" pref-width="8" pref-height="8" preserve-aspect="true" />
           </vertical>
+          <text text="732" align="Center" font-size="3" />
           <vertical bg="round-rect-panel" bg-color="grey" pad="1">
-            <clickable-image id="voting-downvote-image" pref-width="10" pref-height="10" preserve-aspect="true" />
+            <clickable-image id="voting-downvote-image" pref-width="8" pref-height="8" preserve-aspect="true" />
           </vertical>
         </vertical>
         <vertical pref-height="10" pad="1">
