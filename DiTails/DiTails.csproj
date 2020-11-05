@@ -109,6 +109,7 @@
     </ItemGroup>
     <ItemGroup>
       <None Remove="Resources\arrow.png" />
+      <None Remove="Views\detail-view.bsml" />
     </ItemGroup>
     <ItemGroup>
         <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />

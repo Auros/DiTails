@@ -3,22 +3,29 @@
     <horizontal pref-width="100" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
       <!--Panel 1-->
       <vertical pref-width="25" pref-height="45" child-align="MiddleCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
-        <text text="Panel 1" align="Center" font-size="5" />
-        <button text="View Artwork" font-size="3" />
+        <button text="BeatSaver" font-size="3" pref-height="9" />
+        <button text="Level Hash" font-size="3" pref-height="9" />
+        <button text="Description" font-size="3" pref-height="9" />
+        <button text="View Artwork" font-size="3" pref-height="9" />
       </vertical>
 
       <!--Panel 2-->
       <vertical pref-width="50" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
-        <vertical pref-height="30">
-          <text text="Panel 2a" align="Center" font-size="5" />
+        <vertical child-align="UpperCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
+          <text text="Key | db2a" align="TopJustified" font-size="3" />
+          <text text="Author | That Jeff Guy" align="TopJustified" font-size="3" />
+          <text text="Mapper | Joetastic" align="TopJustified" font-size="3" />
+          <text text="Created | March 2nd, 2018" align="TopJustified" font-size="3" />
+          <text text="Downloads | 102341" align="TopJustified" font-size="3" />
         </vertical>
         <horizontal pref-height="15">
-          <button text="OK" event-click="hide-detail" pref-width="20" />
+          <button text="OK" event-click="hide-detail" pref-width="30" pref-height="8" />
         </horizontal>
       </vertical>
-      
+
+      <!--Panel 3-->
       <vertical pref-width="25" pref-height="45" pad="1">
-        <vertical pref-height="22" pad="2" bg="round-rect-panel" bg-color="red">
+        <vertical pref-height="22" pad="2" bg="round-rect-panel" bg-color="white">
           <text id="voting-text" text="Vote" align="Center" font-size="4" />
           <vertical bg="round-rect-panel" bg-color="grey" pad="1">
             <clickable-image id="voting-upvote-image" pref-width="10" pref-height="10" preserve-aspect="true" />
