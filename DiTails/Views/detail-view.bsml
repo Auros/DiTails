@@ -7,10 +7,11 @@
     </horizontal>
     
     <horizontal active="~show-panel" pref-width="100" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
+      
       <!--Panel 1-->
       <vertical pref-width="25" pref-height="45" child-align="MiddleCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
-        <button text="BeatSaver" font-size="3" pref-height="9" />
-        <button text="Level Hash" font-size="3" pref-height="9" />
+        <button text="BeatSaver" font-size="3" pref-height="9" on-click="view-open-beatsaver-url" />
+        <button text="Level Hash" font-size="3" pref-height="9" on-click="view-level-hash" />
         <button text="Description" font-size="3" pref-height="9" on-click="view-description" />
         <button text="View Artwork" font-size="3" pref-height="9" on-click="view-artwork" />
       </vertical>
@@ -51,13 +52,32 @@
     </horizontal>
   </modal>
 
+  <!--Open URL View-->
+  <modal id="open-url-modal" size-delta-x="90" size-delta-y="20" show-event="show-open-url" hide-event="hide">
+    <vertical pref-width="90" pref-height="20">
+      <text text="~url" align="Center" />
+      <horizontal>
+        <button text="No" pref-width="30" pref-height="8" on-click="close-submodal" />
+        <button text="Yes" pref-width="30" pref-height="8" on-click="open-url" />
+      </horizontal>
+    </vertical>
+  </modal>
+
+  <!--Level Hash View-->
+  <modal id="level-hash-modal" size-delta-x="100" size-delta-y="20" show-event="show-level-hash" hide-event="hide">
+    <vertical pref-width="100" pref-height="20">
+      <text text="~hash" font-size="5" align="Center" />
+      <button text="OK" pref-width="30" pref-height="8" on-click="close-submodal" />
+    </vertical>
+  </modal>
+  
   <!--Description View-->
   <modal id="description-modal" size-delta-x="80" size-delta-y="60" show-event="show-description" hide-event="hide">
     <vertical pref-width="80" pref-height="50" size-delta-y="-10" anchor-pos-y="5">
       <text-page id="description-scroller" size-delta-x="75" size-delta-y="50" anchor-pos-x="0" anchor-pos-y="0" />
       <button ignore-layout="true" anchor-pos-x="0" anchor-pos-y="-28"
               anchor-min-x="0.5" anchor-max-x="0.5" anchor-min-y="0.5" anchor-max-y="0.5"
-              text="OK" pref-width="30" pref-height="8" on-click="close-description" />
+              text="OK" pref-width="30" pref-height="8" on-click="close-submodal" />
     </vertical>
   </modal>
   
@@ -65,7 +85,7 @@
   <modal id="artwork-modal" size-delta-x="63" size-delta-y="72" show-event="show-artwork" hide-event="hide">
     <vertical horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
       <image id="artwork-image" pref-width="56" pref-height="56" preserve-aspect="true" />
-      <button text="OK" pref-width="30" pref-height="8" on-click="close-artwork" />
+      <button text="OK" pref-width="30" pref-height="8" on-click="close-submodal" />
     </vertical>
   </modal>
 </bg>

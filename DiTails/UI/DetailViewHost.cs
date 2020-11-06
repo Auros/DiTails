@@ -171,27 +171,45 @@ namespace DiTails.UI
 
         #region BSML Actions
 
+        [UIAction("view-open-beatsaver-url")]
+        protected async Task ViewOpenBeatSaverURL()
+        {
+            parserParams?.EmitEvent("hide");
+            await SiraUtil.Utilities.PauseChamp;
+            if (_activeBeatSaverMap != null)
+            {
+                URL = $"https://beatsaver.com/beatmap/{_activeBeatSaverMap.Key}";
+            }
+            parserParams?.EmitEvent("show-open-url");
+        }
+
+        [UIAction("view-level-hash")]
+        protected async Task ViewLevelHash()
+        {
+            parserParams?.EmitEvent("hide");
+            await SiraUtil.Utilities.PauseChamp;
+            if (_activeBeatmap != null)
+            {
+                Hash = _activeBeatmap.level.levelID.Replace("custom_level_", "");
+            }
+            parserParams?.EmitEvent("show-level-hash");
+        }
+
         [UIAction("view-description")]
         protected async Task ViewDescription()
         {
             parserParams?.EmitEvent("hide");
+            await SiraUtil.Utilities.PauseChamp;
+            parserParams?.EmitEvent("show-description");
             if (_activeBeatSaverMap != null && textPageScrollView != null)
             {
                 textPageScrollView.SetText(_activeBeatSaverMap.Description ?? "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description"));
+                await SiraUtil.Utilities.PauseChamp;
                 textPageScrollView.SetDestinationPosY(0);
                 textPageScrollView.ScrollTo(0, false);
                 textPageScrollView.RefreshButtons();
+                textPageScrollView.SetText(_activeBeatSaverMap.Description ?? "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description"));
             }
-            await SiraUtil.Utilities.PauseChamp;
-            parserParams?.EmitEvent("show-description");
-        }
-
-        [UIAction("close-description")]
-        protected async Task CloseDescription()
-        {
-            parserParams?.EmitEvent("hide");
-            await SiraUtil.Utilities.PauseChamp;
-            parserParams?.EmitEvent("show-detail");
         }
 
         [UIAction("view-artwork")]
@@ -200,20 +218,29 @@ namespace DiTails.UI
             parserParams?.EmitEvent("hide");
             if (artworkImage != null && _activeBeatmap != null)
             {
-                artworkImage.sprite = await _activeBeatmap.level.GetCoverImageAsync(_cts.Token);
+                var coverImage = await _activeBeatmap.level.GetCoverImageAsync(_cts.Token);
+                coverImage.texture.wrapMode = TextureWrapMode.Clamp;
+                artworkImage.sprite = coverImage;
             }
             await SiraUtil.Utilities.PauseChamp;
             parserParams?.EmitEvent("show-artwork");
         }
 
-        [UIAction("close-artwork")]
-        protected async Task CloseArtwork()
+        [UIAction("close-submodal")]
+        protected async Task Close()
         {
             parserParams?.EmitEvent("hide");
             await SiraUtil.Utilities.PauseChamp;
             parserParams?.EmitEvent("show-detail");
         }
 
+        [UIAction("open-url")]
+        protected async Task OpenURL()
+        {
+            Application.OpenURL(URL);
+            await Close();
+        }
+        
         #endregion
 
         #region BSML Bindings
@@ -306,15 +333,30 @@ namespace DiTails.UI
             }
         }
 
-        private string _description = "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description");
-        [UIValue("description")]
-        protected string Description
+        [UIValue("url")]
+        protected string URLView => string.Format("DITAILS_OPENURL".LocalizationGetOr("This will open <color=#1159cf>{0}</color> in your browser. Are you sure?"), new Uri(URL).Host);
+
+        private string _url = "https://google.com";
+        protected string URL
         {
-            get => _description;
+            get => _url;
             set
             {
-                _description = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Description)));
+                _url = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(URL)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(URLView)));
+            }
+        }
+
+        private string _hash = "DITAILS_NOHASH".LocalizationGetOr("No Level Hash");
+        [UIValue("hash")]
+        protected string Hash
+        {
+            get => _hash;
+            set
+            {
+                _hash = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Hash)));
             }
         }
 
