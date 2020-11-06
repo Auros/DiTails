@@ -1,3 +1,4 @@
+using HMUI;
 using TMPro;
 using System;
 using Zenject;
@@ -15,6 +16,7 @@ using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
+using BeatSaverSharp;
 
 namespace DiTails.UI
 {
@@ -24,7 +26,9 @@ namespace DiTails.UI
 
         private bool _didParse;
         private bool _didSetupVote;
+        private Beatmap? _activeBeatSaverMap;
         private CancellationTokenSource _cts;
+        private IDifficultyBeatmap? _activeBeatmap;
 
         private string? _bsmlContent;
         private readonly SiraLog _siraLog;
@@ -70,6 +74,16 @@ namespace DiTails.UI
                 {
                     _siraLog.Debug("Parsing Details");
                     BSMLParser.instance.Parse(_bsmlContent, standardLevelDetailViewController.gameObject, this);
+                    if (rootTransform != null && mainModalTransform != null)
+                    {
+                        rootTransform.gameObject.name = "DiTailsDetailView";
+                        mainModalTransform.gameObject.name = "DiTailsMainModal";
+                    }
+                    if (descriptionModalTransform != null && artworkModalTransform != null)
+                    {
+                        descriptionModalTransform.gameObject.name = "DiTailsDescriptionModal";
+                        artworkModalTransform.gameObject.name = "DiTailsArtworkModal";
+                    }
                     _siraLog.Debug("Parsing Complete");
                     _didParse = true;
                 }
@@ -102,11 +116,13 @@ namespace DiTails.UI
         private void HideMenu()
         {
             _cts.Cancel();
-            if (_didParse && rootTransform != null && mainModalTransform != null)
+            if (_didParse && rootTransform != null && mainModalTransform != null && descriptionModalTransform != null && artworkModalTransform != null)
             {
                 mainModalTransform.transform.SetParent(rootTransform.transform);
+                descriptionModalTransform.transform.SetParent(rootTransform.transform);
+                artworkModalTransform.transform.SetParent(rootTransform.transform);
             }
-            parserParams?.EmitEvent("hide-detail");
+            parserParams?.EmitEvent("hide");
         }
 
         private void MenuRequested(StandardLevelDetailViewController standardLevelDetailViewController, IDifficultyBeatmap difficultyBeatmap)
@@ -121,6 +137,7 @@ namespace DiTails.UI
 
         private async Task LoadMenu(StandardLevelDetailViewController standardLevelDetailViewController, IDifficultyBeatmap difficultyBeatmap)
         {
+            _activeBeatmap = difficultyBeatmap;
             await Parse(standardLevelDetailViewController);
             SetupVotingButtons();
 
@@ -138,6 +155,7 @@ namespace DiTails.UI
                 Votes = (map.Stats.UpVotes + -map.Stats.DownVotes).ToString();
                 SetRating(map.Stats.Rating);
             }
+            _activeBeatSaverMap = map;
         }
 
         private void SetRating(float value)
@@ -147,6 +165,50 @@ namespace DiTails.UI
                 rating.text = string.Format("{0:0%}", value);
                 rating.color = Constants.Evaluate(value);
             }
+        }
+
+        #endregion
+
+        #region BSML Actions
+
+        [UIAction("view-description")]
+        protected async Task ViewDescription()
+        {
+            parserParams?.EmitEvent("hide");
+            if (_activeBeatSaverMap != null)
+            {
+                Description = _activeBeatSaverMap.Description ?? "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description");
+            }
+            await SiraUtil.Utilities.PauseChamp;
+            parserParams?.EmitEvent("show-description");
+        }
+
+        [UIAction("close-description")]
+        protected async Task CloseDescription()
+        {
+            parserParams?.EmitEvent("hide");
+            await SiraUtil.Utilities.PauseChamp;
+            parserParams?.EmitEvent("show-detail");
+        }
+
+        [UIAction("view-artwork")]
+        protected async Task ViewArtwork()
+        {
+            parserParams?.EmitEvent("hide");
+            if (artworkImage != null && _activeBeatmap != null)
+            {
+                artworkImage.sprite = await _activeBeatmap.level.GetCoverImageAsync(_cts.Token);
+            }
+            await SiraUtil.Utilities.PauseChamp;
+            parserParams?.EmitEvent("show-artwork");
+        }
+
+        [UIAction("close-artwork")]
+        protected async Task CloseArtwork()
+        {
+            parserParams?.EmitEvent("hide");
+            await SiraUtil.Utilities.PauseChamp;
+            parserParams?.EmitEvent("show-detail");
         }
 
         #endregion
@@ -241,6 +303,18 @@ namespace DiTails.UI
             }
         }
 
+        private string _description = "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description");
+        [UIValue("description")]
+        protected string Description
+        {
+            get => _description;
+            set
+            {
+                _description = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Description)));
+            }
+        }
+
         #endregion
 
         #region BSML Variables
@@ -251,18 +325,26 @@ namespace DiTails.UI
         [UIComponent("rating")]
         protected TextMeshProUGUI? rating;
 
+        [UIComponent("artwork-image")]
+        protected ImageView? artworkImage;
+
         [UIComponent("root")]
         protected RectTransform? rootTransform;
 
         [UIComponent("main-modal")]
         protected RectTransform? mainModalTransform;
 
+        [UIComponent("description-modal")]
+        protected RectTransform? descriptionModalTransform;
+
+        [UIComponent("artwork-modal")]
+        protected RectTransform? artworkModalTransform;
+
         [UIComponent("voting-upvote-image")]
         protected ClickableImage? votingUpvoteImage;
 
         [UIComponent("voting-downvote-image")]
         protected ClickableImage? votingDownvoteImage;
-
 
         #endregion
     }

@@ -1,5 +1,5 @@
 <bg id="root" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
-  <modal id="main-modal" size-delta-x="100" size-delta-y="45" show-event="show-detail" hide-event="hide-detail" clickerino-offerino-closerino="true">
+  <modal id="main-modal" size-delta-x="100" size-delta-y="45" show-event="show-detail" hide-event="hide" clickerino-offerino-closerino="true">
 
     <!--Loading Indicator-->
     <horizontal active="~show-loading" horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
@@ -11,8 +11,8 @@
       <vertical pref-width="25" pref-height="45" child-align="MiddleCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
         <button text="BeatSaver" font-size="3" pref-height="9" />
         <button text="Level Hash" font-size="3" pref-height="9" />
-        <button text="Description" font-size="3" pref-height="9" />
-        <button text="View Artwork" font-size="3" pref-height="9" />
+        <button text="Description" font-size="3" pref-height="9" on-click="view-description" />
+        <button text="View Artwork" font-size="3" pref-height="9" on-click="view-artwork" />
       </vertical>
 
       <!--Panel 2-->
@@ -26,7 +26,7 @@
           <text text="~downloads" align="TopJustified" font-size="3" />
         </vertical>
         <horizontal pref-height="15">
-          <button text="OK" event-click="hide-detail" pref-width="30" pref-height="8" />
+          <button text="OK" event-click="hide" pref-width="30" pref-height="8" />
         </horizontal>
       </vertical>
 
@@ -51,7 +51,17 @@
     </horizontal>
   </modal>
 
-  <modal id="artwork-view" size-delta-x="45" size-delta-y="45" show-event="show-artwork" hide-event="hide-artwork" clickerino-offerino-closerino="true">
-    <image id="artwork-image" pref-width="40" pref-height="40" />
+  <!--Description View-->
+  <modal id="description-modal" size-delta-x="80" size-delta-y="60" show-event="show-description" hide-event="hide">
+    <text-page text="~description" size-delta-x="75" size-delta-y="55" anchor-pos-x="0" anchor-pos-y="0" anchor-min-x="0" anchor-max-x="1" anchor-min-y="0" anchor-max-y="1" />
+    <button text="OK" pref-width="30" pref-height="8" on-click="close-description" />
+  </modal>
+  
+  <!--Artwork View-->
+  <modal id="artwork-modal" size-delta-x="63" size-delta-y="72" show-event="show-artwork" hide-event="hide">
+    <vertical horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
+      <image id="artwork-image" pref-width="56" pref-height="56" preserve-aspect="true" />
+      <button text="OK" pref-width="30" pref-height="8" on-click="close-artwork" />
+    </vertical>
   </modal>
 </bg>
