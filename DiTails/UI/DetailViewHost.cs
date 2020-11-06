@@ -175,9 +175,12 @@ namespace DiTails.UI
         protected async Task ViewDescription()
         {
             parserParams?.EmitEvent("hide");
-            if (_activeBeatSaverMap != null)
+            if (_activeBeatSaverMap != null && textPageScrollView != null)
             {
-                Description = _activeBeatSaverMap.Description ?? "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description");
+                textPageScrollView.SetText(_activeBeatSaverMap.Description ?? "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description"));
+                textPageScrollView.SetDestinationPosY(0);
+                textPageScrollView.ScrollTo(0, false);
+                textPageScrollView.RefreshButtons();
             }
             await SiraUtil.Utilities.PauseChamp;
             parserParams?.EmitEvent("show-description");
@@ -333,6 +336,9 @@ namespace DiTails.UI
 
         [UIComponent("main-modal")]
         protected RectTransform? mainModalTransform;
+
+        [UIComponent("description-scroller")]
+        protected TextPageScrollView? textPageScrollView;
 
         [UIComponent("description-modal")]
         protected RectTransform? descriptionModalTransform;
