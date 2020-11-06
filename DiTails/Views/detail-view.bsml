@@ -36,11 +36,11 @@
         <vertical pref-height="22" pad="2" bg="round-rect-panel" bg-color="white">
           <text id="voting-text" text="Vote" align="Center" font-size="4" />
           <vertical bg="round-rect-panel" bg-color="grey" pad="1">
-            <clickable-image id="voting-upvote-image" pref-width="8" pref-height="8" preserve-aspect="true" />
+            <clickable-image id="voting-upvote-image" pref-width="8" pref-height="8" preserve-aspect="true" on-click="upvote" />
           </vertical>
           <text text="~votes" align="Center" font-size="3" />
           <vertical bg="round-rect-panel" bg-color="grey" pad="1">
-            <clickable-image id="voting-downvote-image" pref-width="8" pref-height="8" preserve-aspect="true" />
+            <clickable-image id="voting-downvote-image" pref-width="8" pref-height="8" preserve-aspect="true" on-click="downvote" />
           </vertical>
         </vertical>
         <vertical pref-height="10" pad="1">

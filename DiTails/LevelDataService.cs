@@ -38,8 +38,10 @@ namespace DiTails
                 beatmap = await _beatSaverInstance.Hash(hash, new StandardRequestOptions { Token = token });
                 if (beatmap == null)
                 {
+                    _siraLog.Debug($"Could Not Find Level Data for {difficultyBeatmap.level.songName} ({hash})");
                     return null;
                 }
+                _siraLog.Debug($"Found Level Data for {difficultyBeatmap.level.songName} ({hash})");
                 _mapCache.Add(hash, beatmap);
             }
             else

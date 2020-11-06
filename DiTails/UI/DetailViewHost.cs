@@ -5,18 +5,19 @@ using Zenject;
 using SiraUtil;
 using System.IO;
 using UnityEngine;
+using BeatSaverSharp;
 using SiraUtil.Tools;
-using DiTails.Managers;
 using System.Threading;
-using System.Reflection;
+using DiTails.Managers;
 using DiTails.Utilities;
+using System.Reflection;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
-using BeatSaverSharp;
+using IPA.Utilities;
 
 namespace DiTails.UI
 {
@@ -33,14 +34,16 @@ namespace DiTails.UI
         private string? _bsmlContent;
         private readonly SiraLog _siraLog;
         private readonly LevelDataService _levelDataService;
+        private readonly IPlatformUserModel _platformUserModel;
         private readonly DetailContextManager _detailContextManager;
 
         #region Initialization 
 
-        public DetailViewHost(SiraLog siraLog, LevelDataService levelDataService, DetailContextManager detailContextManager)
+        public DetailViewHost(SiraLog siraLog, LevelDataService levelDataService, IPlatformUserModel platformUserModel, DetailContextManager detailContextManager)
         {
             _siraLog = siraLog;
             _levelDataService = levelDataService;
+            _platformUserModel = platformUserModel;
             _detailContextManager = detailContextManager;
 
             _cts = new CancellationTokenSource();
@@ -167,9 +170,52 @@ namespace DiTails.UI
             }
         }
 
+        protected async Task Vote(bool upvote)
+        {
+            try
+            {
+                var info = await _platformUserModel.GetUserInfo();
+                var ticket = await _platformUserModel.GetUserAuthToken();
+                if (_activeBeatSaverMap != null && ticket != null)
+                {
+                    _siraLog.Info("Starting Vote...");
+                    var ticketBytes = Utils.StringToByteArray(ticket.Replace("-", ""));
+                    if (upvote)
+                    {
+                        await _activeBeatSaverMap.VoteUp(info.platformUserId, ticketBytes);
+                    }
+                    else
+                    {
+                        await _activeBeatSaverMap.VoteDown(info.platformUserId, ticketBytes);
+                    }
+                    await _activeBeatSaverMap.RefreshStats(new StandardRequestOptions { Token = _cts.Token });
+                    Downloads = _activeBeatSaverMap.Stats.Downloads.ToString();
+                    Votes = (_activeBeatSaverMap.Stats.UpVotes + -_activeBeatSaverMap.Stats.DownVotes).ToString();
+                    SetRating(_activeBeatSaverMap.Stats.Rating);
+                    _siraLog.Info("Voted");
+                }
+            }
+            catch (Exception e)
+            {
+                _siraLog.Error(e.Message);
+            }
+        }
+
         #endregion
 
         #region BSML Actions
+
+        [UIAction("upvote")]
+        protected async Task Upvote()
+        {
+            await Vote(true);
+        }
+
+        [UIAction("downvote")]
+        protected async Task Downvote()
+        {
+            await Vote(false);
+        }
 
         [UIAction("view-open-beatsaver-url")]
         protected async Task ViewOpenBeatSaverURL()
