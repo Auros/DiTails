@@ -10,9 +10,9 @@
       
       <!--Panel 1-->
       <vertical pref-width="25" pref-height="45" child-align="MiddleCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
-        <button text="BeatSaver" font-size="3" pref-height="9" on-click="view-open-beatsaver-url" />
+        <button active="~custom-level" text="BeatSaver" font-size="3" pref-height="9" on-click="view-open-beatsaver-url" />
         <button text="Level Hash" font-size="3" pref-height="9" on-click="view-level-hash" />
-        <button text="Description" font-size="3" pref-height="9" on-click="view-description" />
+        <button active="~custom-level" text="Description" font-size="3" pref-height="9" on-click="view-description" />
         <button text="View Artwork" font-size="3" pref-height="9" on-click="view-artwork" />
       </vertical>
 
@@ -20,11 +20,11 @@
       <vertical pref-width="50" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
         <vertical child-align="UpperCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
           <text text="DiTails" align="Top" font-size="7" underlined="true" />
-          <text text="~key" align="TopJustified" font-size="3" />
+          <text active="~custom-level" text="~key" align="TopJustified" font-size="3" />
           <text text="~author" align="TopJustified" font-size="3" />
-          <text text="~mapper" align="TopJustified" font-size="3" />
-          <text text="~uploaded" align="TopJustified" font-size="3" />
-          <text text="~downloads" align="TopJustified" font-size="3" />
+          <text active="~custom-level" text="~mapper" align="TopJustified" font-size="3" />
+          <text active="~custom-level" text="~uploaded" align="TopJustified" font-size="3" />
+          <text active="~custom-level" text="~downloads" align="TopJustified" font-size="3" />
         </vertical>
         <horizontal pref-height="15">
           <button text="OK" event-click="hide" pref-width="30" pref-height="8" />
@@ -32,8 +32,8 @@
       </vertical>
 
       <!--Panel 3-->
-      <vertical pref-width="25" pref-height="45" pad="1">
-        <vertical pref-height="22" pad="2" bg="round-rect-panel" bg-color="white">
+      <vertical active="~custom-level" pref-width="25" pref-height="45" pad="1" vertical-fit="PreferredSize">
+        <vertical active="~can-vote" pref-height="23" pad="2" bg="round-rect-panel" bg-color="white">
           <text id="voting-text" text="Vote" align="Center" font-size="4" />
           <vertical bg="round-rect-panel" bg-color="grey" pad="1">
             <clickable-image id="voting-upvote-image" pref-width="8" pref-height="8" preserve-aspect="true" on-click="upvote" />
@@ -42,6 +42,9 @@
           <vertical bg="round-rect-panel" bg-color="grey" pad="1">
             <clickable-image id="voting-downvote-image" pref-width="8" pref-height="8" preserve-aspect="true" on-click="downvote" />
           </vertical>
+        </vertical>
+        <vertical active="~vote-loading" pref-height="25" pad="2">
+          <loading pref-width="11" pref-height="11" preserve-aspect="true" />
         </vertical>
         <vertical pref-height="10" pad="1">
           <text text="Rating" font-size="3" align="Center" />

@@ -5,6 +5,7 @@ using Zenject;
 using SiraUtil;
 using System.IO;
 using UnityEngine;
+using IPA.Utilities;
 using BeatSaverSharp;
 using SiraUtil.Tools;
 using System.Threading;
@@ -17,7 +18,6 @@ using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
-using IPA.Utilities;
 
 namespace DiTails.UI
 {
@@ -65,6 +65,9 @@ namespace DiTails.UI
         {
             if (!_didParse)
             {
+                var info = await _platformUserModel.GetUserInfo();
+                CanVote = info.platform == UserInfo.Platform.Steam || info.platform == UserInfo.Platform.Test;
+
                 _siraLog.Debug("Doing Initial BSML Parsing of the Detail View");
                 _siraLog.Debug("Getting Manifest Stream");
                 using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DiTails.Views.detail-view.bsml"))
@@ -119,9 +122,11 @@ namespace DiTails.UI
         private void HideMenu()
         {
             _cts.Cancel();
-            if (_didParse && rootTransform != null && mainModalTransform != null && descriptionModalTransform != null && artworkModalTransform != null)
+            if (_didParse && rootTransform != null && mainModalTransform != null && openURLModalTransform != null && levelHashModalTransform != null && descriptionModalTransform != null && artworkModalTransform != null)
             {
                 mainModalTransform.transform.SetParent(rootTransform.transform);
+                openURLModalTransform.transform.SetParent(rootTransform.transform);
+                levelHashModalTransform.transform.SetParent(rootTransform.transform);
                 descriptionModalTransform.transform.SetParent(rootTransform.transform);
                 artworkModalTransform.transform.SetParent(rootTransform.transform);
             }
@@ -151,14 +156,15 @@ namespace DiTails.UI
             if (map != null)
             {
                 Key = map.Key;
-                Author = difficultyBeatmap.level.songAuthorName;
                 Mapper = difficultyBeatmap.level.levelAuthorName ?? map.Uploader.Username ?? "Unknown";
                 Uploaded = map.Uploaded.ToString("MMMM dd, yyyy");
                 Downloads = map.Stats.Downloads.ToString();
                 Votes = (map.Stats.UpVotes + -map.Stats.DownVotes).ToString();
                 SetRating(map.Stats.Rating);
             }
+            Author = difficultyBeatmap.level.songAuthorName;
             _activeBeatSaverMap = map;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCustomLevel)));
         }
 
         private void SetRating(float value)
@@ -172,13 +178,15 @@ namespace DiTails.UI
 
         protected async Task Vote(bool upvote)
         {
+            var info = await _platformUserModel.GetUserInfo();
+            CanVote = false;
             try
             {
-                var info = await _platformUserModel.GetUserInfo();
+                VoteLoading = true;
                 var ticket = await _platformUserModel.GetUserAuthToken();
                 if (_activeBeatSaverMap != null && ticket != null)
                 {
-                    _siraLog.Info("Starting Vote...");
+                    _siraLog.Debug("Starting Vote...");
                     var ticketBytes = Utils.StringToByteArray(ticket.Replace("-", ""));
                     if (upvote)
                     {
@@ -188,17 +196,17 @@ namespace DiTails.UI
                     {
                         await _activeBeatSaverMap.VoteDown(info.platformUserId, ticketBytes);
                     }
-                    await _activeBeatSaverMap.RefreshStats(new StandardRequestOptions { Token = _cts.Token });
-                    Downloads = _activeBeatSaverMap.Stats.Downloads.ToString();
+                    _siraLog.Debug($"Voted. Upvote? ({upvote})");
                     Votes = (_activeBeatSaverMap.Stats.UpVotes + -_activeBeatSaverMap.Stats.DownVotes).ToString();
                     SetRating(_activeBeatSaverMap.Stats.Rating);
-                    _siraLog.Info("Voted");
                 }
+                VoteLoading = false;
             }
             catch (Exception e)
             {
                 _siraLog.Error(e.Message);
             }
+            CanVote = info.platform == UserInfo.Platform.Steam || info.platform == UserInfo.Platform.Test;
         }
 
         #endregion
@@ -286,10 +294,37 @@ namespace DiTails.UI
             Application.OpenURL(URL);
             await Close();
         }
-        
+
         #endregion
 
         #region BSML Bindings
+
+        [UIValue("custom-level")]
+        protected bool IsCustomLevel => _activeBeatSaverMap != null;
+
+        private bool _canVote = false;
+        [UIValue("can-vote")]
+        protected bool CanVote
+        {
+            get => _canVote;
+            set
+            {
+                _canVote = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanVote)));
+            }
+        }
+
+        private bool _voteLoading = false;
+        [UIValue("vote-loading")]
+        protected bool VoteLoading
+        {
+            get => _voteLoading;
+            set
+            {
+                _voteLoading = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VoteLoading)));
+            }
+        }
 
         [UIValue("show-loading")]
         public bool ShowLoading => !ShowPanel;
@@ -424,6 +459,12 @@ namespace DiTails.UI
 
         [UIComponent("main-modal")]
         protected RectTransform? mainModalTransform;
+
+        [UIComponent("open-url-modal")]
+        protected RectTransform? openURLModalTransform;
+
+        [UIComponent("level-hash-modal")]
+        protected RectTransform? levelHashModalTransform;
 
         [UIComponent("description-scroller")]
         protected TextPageScrollView? textPageScrollView;
