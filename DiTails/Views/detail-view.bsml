@@ -1,6 +1,12 @@
 <bg id="root" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
   <modal id="main-modal" size-delta-x="100" size-delta-y="45" show-event="show-detail" hide-event="hide-detail" clickerino-offerino-closerino="true">
-    <horizontal pref-width="100" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
+
+    <!--Loading Indicator-->
+    <horizontal active="~show-loading" horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
+      <loading preferred-width="30" preferred-height="30" preserve-aspect="true" />
+    </horizontal>
+    
+    <horizontal active="~show-panel" pref-width="100" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
       <!--Panel 1-->
       <vertical pref-width="25" pref-height="45" child-align="MiddleCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
         <button text="BeatSaver" font-size="3" pref-height="9" />
@@ -13,11 +19,11 @@
       <vertical pref-width="50" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
         <vertical child-align="UpperCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
           <text text="DiTails" align="Top" font-size="7" underlined="true" />
-          <text text="Key | db2a" align="TopJustified" font-size="3" />
-          <text text="Author | That Jeff Guy" align="TopJustified" font-size="3" />
-          <text text="Mapper | Joetastic" align="TopJustified" font-size="3" />
-          <text text="Created | March 2nd, 2018" align="TopJustified" font-size="3" />
-          <text text="Downloads | 102341" align="TopJustified" font-size="3" />
+          <text text="~key" align="TopJustified" font-size="3" />
+          <text text="~author" align="TopJustified" font-size="3" />
+          <text text="~mapper" align="TopJustified" font-size="3" />
+          <text text="~uploaded" align="TopJustified" font-size="3" />
+          <text text="~downloads" align="TopJustified" font-size="3" />
         </vertical>
         <horizontal pref-height="15">
           <button text="OK" event-click="hide-detail" pref-width="30" pref-height="8" />
@@ -31,16 +37,21 @@
           <vertical bg="round-rect-panel" bg-color="grey" pad="1">
             <clickable-image id="voting-upvote-image" pref-width="8" pref-height="8" preserve-aspect="true" />
           </vertical>
-          <text text="732" align="Center" font-size="3" />
+          <text text="~votes" align="Center" font-size="3" />
           <vertical bg="round-rect-panel" bg-color="grey" pad="1">
             <clickable-image id="voting-downvote-image" pref-width="8" pref-height="8" preserve-aspect="true" />
           </vertical>
         </vertical>
         <vertical pref-height="10" pad="1">
           <text text="Rating" font-size="3" align="Center" />
-          <text text="91%" font-size="7" font-color="green" align="Center" />
+          <text id="rating" text="91%" font-size="7" font-color="green" align="Center" />
         </vertical>
       </vertical>
+      
     </horizontal>
+  </modal>
+
+  <modal id="artwork-view" size-delta-x="45" size-delta-y="45" show-event="show-artwork" hide-event="hide-artwork" clickerino-offerino-closerino="true">
+    <image id="artwork-image" pref-width="40" pref-height="40" />
   </modal>
 </bg>

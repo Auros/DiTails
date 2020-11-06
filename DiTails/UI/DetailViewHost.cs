@@ -1,17 +1,20 @@
+using TMPro;
 using System;
 using Zenject;
+using SiraUtil;
 using System.IO;
 using UnityEngine;
 using SiraUtil.Tools;
 using DiTails.Managers;
+using System.Threading;
 using System.Reflection;
+using DiTails.Utilities;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
-using System.Threading;
 
 namespace DiTails.UI
 {
@@ -114,26 +117,129 @@ namespace DiTails.UI
 
         #endregion
 
+        #region Usage
+
         private async Task LoadMenu(StandardLevelDetailViewController standardLevelDetailViewController, IDifficultyBeatmap difficultyBeatmap)
         {
             await Parse(standardLevelDetailViewController);
             SetupVotingButtons();
 
+            ShowPanel = false;
             parserParams?.EmitEvent("show-detail");
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("E"));
-
             var map = await _levelDataService.GetBeatmap(difficultyBeatmap, _cts.Token);
+            ShowPanel = true;
             if (map != null)
             {
-                _siraLog.Debug(map.Name);
-                _siraLog.Debug(map.Key);
-                _siraLog.Debug($"{map.Stats.UpVotes + -map.Stats.DownVotes}");
+                Key = map.Key;
+                Author = difficultyBeatmap.level.songAuthorName;
+                Mapper = difficultyBeatmap.level.levelAuthorName ?? map.Uploader.Username ?? "Unknown";
+                Uploaded = map.Uploaded.ToString("MMMM dd, yyyy");
+                Downloads = map.Stats.Downloads.ToString();
+                Votes = (map.Stats.UpVotes + -map.Stats.DownVotes).ToString();
+                SetRating(map.Stats.Rating);
             }
         }
 
-        #region Usage
+        private void SetRating(float value)
+        {
+            if (rating != null)
+            {
+                rating.text = string.Format("{0:0%}", value);
+                rating.color = Constants.Evaluate(value);
+            }
+        }
 
+        #endregion
 
+        #region BSML Bindings
+
+        [UIValue("show-loading")]
+        public bool ShowLoading => !ShowPanel;
+
+        private bool _showPanel = false;
+        [UIValue("show-panel")]
+        protected bool ShowPanel
+        {
+            get => _showPanel;
+            set
+            {
+                _showPanel = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowPanel)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowLoading)));
+            }
+        }
+
+        private string _key = "Key | 0";
+        [UIValue("key")]
+        protected string Key
+        {
+            get => _key;
+            set
+            {
+                _key = string.Join(" | ", "DITAILS_KEY".LocalizationGetOr("Key"), value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Key)));
+            }
+        }
+
+        private string _author = "Author | Unknown";
+        [UIValue("author")]
+        protected string Author
+        {
+            get => _author;
+            set
+            {
+                _author = string.Join(" | ", "DITAILS_AUTHOR".LocalizationGetOr("Author"), value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Author)));
+            }
+        }
+
+        private string _mapper = "Mapper | None";
+        [UIValue("mapper")]
+        protected string Mapper
+        {
+            get => _mapper;
+            set
+            {
+                _mapper = string.Join(" | ", "DITAILS_MAPPER".LocalizationGetOr("Mapper"), value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Mapper)));
+            }
+        }
+
+        private string _uploaded = "Uploaded | Never";
+        [UIValue("uploaded")]
+        protected string Uploaded
+        {
+            get => _uploaded;
+            set
+            {
+                _uploaded = string.Join(" | ", "DITAILS_UPLOADED".LocalizationGetOr("Uploaded"), value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Uploaded)));
+            }
+        }
+
+        private string _downloads = "Downloads | 0";
+        [UIValue("downloads")]
+        protected string Downloads
+        {
+            get => _downloads;
+            set
+            {
+                _downloads = string.Join(" | ", "DITAILS_DOWNLOADS".LocalizationGetOr("Downloads"), value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Downloads)));
+            }
+        }
+
+        private string _votes = "0";
+        [UIValue("votes")]
+        protected string Votes
+        {
+            get => _votes;
+            set
+            {
+                _votes = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Votes)));
+            }
+        }
 
         #endregion
 
@@ -141,6 +247,9 @@ namespace DiTails.UI
 
         [UIParams]
         protected BSMLParserParams? parserParams;
+
+        [UIComponent("rating")]
+        protected TextMeshProUGUI? rating;
 
         [UIComponent("root")]
         protected RectTransform? rootTransform;
@@ -153,6 +262,7 @@ namespace DiTails.UI
 
         [UIComponent("voting-downvote-image")]
         protected ClickableImage? votingDownvoteImage;
+
 
         #endregion
     }

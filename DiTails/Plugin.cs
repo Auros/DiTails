@@ -1,12 +1,12 @@
 using IPA;
 using HMUI;
 using SiraUtil;
+using IPA.Loader;
 using SiraUtil.Zenject;
 using DiTails.Installers;
 using IPALogger = IPA.Logging.Logger;
 using BeatSaberMarkupLanguage.Components;
 using Accessors = DiTails.Utilities.Accessors;
-using IPA.Loader;
 
 namespace DiTails
 {
