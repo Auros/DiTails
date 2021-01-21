@@ -27,7 +27,7 @@
           <text active="~custom-level" text="~downloads" align="TopJustified" font-size="3" />
         </vertical>
         <horizontal pref-height="12">
-          <action-button text="OK" event-click="hide" pref-width="30" pref-height="8" />
+          <action-button id="main-ok-button" text="OK" event-click="hide" pref-width="30" pref-height="12" />
         </horizontal>
       </vertical>
 

@@ -4,10 +4,10 @@ using System;
 using Zenject;
 using SiraUtil;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using IPA.Utilities;
 using SiraUtil.Tools;
-using Newtonsoft.Json;
 using System.Threading;
 using DiTails.Managers;
 using DiTails.Utilities;
@@ -32,7 +32,6 @@ namespace DiTails.UI
         private CancellationTokenSource _cts;
         private IDifficultyBeatmap? _activeBeatmap;
 
-        private readonly Http _http;
         private readonly SiraLog _siraLog;
         private readonly LevelDataService _levelDataService;
         private readonly IPlatformUserModel _platformUserModel;
@@ -41,14 +40,12 @@ namespace DiTails.UI
 
         #region Initialization 
 
-        public DetailViewHost(Http http, SiraLog siraLog, LevelDataService levelDataService, IPlatformUserModel platformUserModel, DetailContextManager detailContextManager)
+        public DetailViewHost(SiraLog siraLog, LevelDataService levelDataService, IPlatformUserModel platformUserModel, DetailContextManager detailContextManager)
         {
-            _http = http;
             _siraLog = siraLog;
             _levelDataService = levelDataService;
             _platformUserModel = platformUserModel;
             _detailContextManager = detailContextManager;
-
             _cts = new CancellationTokenSource();
         }
 
@@ -93,9 +90,11 @@ namespace DiTails.UI
                         descriptionModalTransform.gameObject.name = "DiTailsDescriptionModal";
                         artworkModalTransform.gameObject.name = "DiTailsArtworkModal";
                     }
-                    if (panel1Transform != null)
+                    if (panel1Transform != null && mainOkButton != null)
                     {
-                        foreach (var button in panel1Transform.GetComponentsInChildren<UnityEngine.UI.Button>(true))
+                        var buttons = panel1Transform.GetComponentsInChildren<UnityEngine.UI.Button>(true).ToList();
+                        buttons.Add(mainOkButton);
+                        foreach (var button in buttons)
                         {
                             foreach (var image in button.GetComponentsInChildren<ImageView>(true))
                             {
@@ -458,43 +457,46 @@ namespace DiTails.UI
         #region BSML Variables
 
         [UIParams]
-        protected BSMLParserParams? parserParams;
+        protected BSMLParserParams parserParams = null!;
 
         [UIComponent("rating")]
-        protected TextMeshProUGUI? rating;
+        protected TextMeshProUGUI rating = null!;
 
         [UIComponent("artwork-image")]
-        protected ImageView? artworkImage;
+        protected ImageView artworkImage = null!;
 
         [UIComponent("root")]
-        protected RectTransform? rootTransform;
+        protected RectTransform rootTransform = null!;
 
         [UIComponent("main-modal")]
-        protected RectTransform? mainModalTransform;
+        protected RectTransform mainModalTransform = null!;
 
         [UIComponent("open-url-modal")]
-        protected RectTransform? openURLModalTransform;
+        protected RectTransform openURLModalTransform = null!;
 
         [UIComponent("level-hash-modal")]
-        protected RectTransform? levelHashModalTransform;
+        protected RectTransform levelHashModalTransform = null!;
 
         [UIComponent("description-scroller")]
-        protected TextPageScrollView? textPageScrollView;
+        protected TextPageScrollView textPageScrollView = null!;
 
         [UIComponent("description-modal")]
-        protected RectTransform? descriptionModalTransform;
+        protected RectTransform descriptionModalTransform = null!;
 
         [UIComponent("artwork-modal")]
-        protected RectTransform? artworkModalTransform;
+        protected RectTransform artworkModalTransform = null!;
 
         [UIComponent("voting-upvote-image")]
-        protected ClickableImage? votingUpvoteImage;
+        protected ClickableImage votingUpvoteImage = null!;
 
         [UIComponent("voting-downvote-image")]
-        protected ClickableImage? votingDownvoteImage;
+        protected ClickableImage votingDownvoteImage = null!;
 
         [UIComponent("panel-1-root")]
-        protected RectTransform? panel1Transform;
+        protected RectTransform panel1Transform = null!;
+
+        [UIComponent("main-ok-button")]
+        protected UnityEngine.UI.Button mainOkButton = null!;
 
         #endregion
     }
