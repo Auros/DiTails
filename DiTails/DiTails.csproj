@@ -129,10 +129,12 @@
     <ItemGroup>
         <EmbeddedResource Include="manifest.json" />
         <EmbeddedResource Include="Resources\arrow.png" />
+        <EmbeddedResource Include="Resources\logo.png" />
         <EmbeddedResource Include="Views\*.bsml" />
     </ItemGroup>
     <ItemGroup>
       <None Remove="Resources\arrow.png" />
+      <None Remove="Resources\logo.png" />
       <None Remove="Views\detail-view.bsml" />
     </ItemGroup>
     <ItemGroup>

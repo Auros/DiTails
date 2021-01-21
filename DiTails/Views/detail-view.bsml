@@ -9,25 +9,25 @@
     <horizontal active="~show-panel" pref-width="100" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
       
       <!--Panel 1-->
-      <vertical pref-width="25" pref-height="45" child-align="MiddleCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
-        <button active="~custom-level" text="BeatSaver" font-size="3" pref-height="9" on-click="view-open-beatsaver-url" />
-        <button text="Level Hash" font-size="3" pref-height="9" on-click="view-level-hash" />
-        <button active="~custom-level" text="Description" font-size="3" pref-height="9" on-click="view-description" />
-        <button text="View Artwork" font-size="3" pref-height="9" on-click="view-artwork" />
+      <vertical id="panel-1-root" pref-width="25" pref-height="45" child-align="MiddleCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
+        <button active="~custom-level" text="BeatSaver" font-size="3" pref-height="9" on-click="view-open-beatsaver-url" pref-width="20" />
+        <button text="Level Hash" font-size="3" pref-height="9" on-click="view-level-hash" pref-width="20" />
+        <button active="~custom-level" text="Description" font-size="3" pref-height="9" on-click="view-description" pref-width="20" />
+        <button text="View Artwork" font-size="3" pref-height="9" on-click="view-artwork" pref-width="20" />
       </vertical>
 
       <!--Panel 2-->
       <vertical pref-width="50" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
         <vertical child-align="UpperCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
-          <text text="DiTails" align="Top" font-size="7" underlined="true" />
+          <image src="DiTails.Resources.logo.png" pref-width="40" pref-height="10" preserve-aspect="true" />
           <text active="~custom-level" text="~key" align="TopJustified" font-size="3" />
           <text text="~author" align="TopJustified" font-size="3" />
           <text active="~custom-level" text="~mapper" align="TopJustified" font-size="3" />
           <text active="~custom-level" text="~uploaded" align="TopJustified" font-size="3" />
           <text active="~custom-level" text="~downloads" align="TopJustified" font-size="3" />
         </vertical>
-        <horizontal pref-height="15">
-          <button text="OK" event-click="hide" pref-width="30" pref-height="8" />
+        <horizontal pref-height="12">
+          <action-button text="OK" event-click="hide" pref-width="30" pref-height="8" />
         </horizontal>
       </vertical>
 
@@ -51,7 +51,7 @@
           <text id="rating" text="91%" font-size="7" font-color="green" align="Center" />
         </vertical>
       </vertical>
-      
+      <vertical active="~ost" pref-width="25" pref-height="45" pad="1" vertical-fit="PreferredSize" />
     </horizontal>
   </modal>
 
@@ -61,7 +61,7 @@
       <text text="~url" align="Center" />
       <horizontal>
         <button text="No" pref-width="30" pref-height="8" on-click="close-submodal" />
-        <button text="Yes" pref-width="30" pref-height="8" on-click="open-url" />
+        <action-button text="Yes" pref-width="30" pref-height="8" on-click="open-url" />
       </horizontal>
     </vertical>
   </modal>
@@ -70,7 +70,7 @@
   <modal id="level-hash-modal" size-delta-x="100" size-delta-y="20" show-event="show-level-hash" hide-event="hide">
     <vertical pref-width="100" pref-height="20">
       <text text="~hash" font-size="5" align="Center" />
-      <button text="OK" pref-width="30" pref-height="8" on-click="close-submodal" />
+      <action-button text="OK" pref-width="30" pref-height="8" on-click="close-submodal" />
     </vertical>
   </modal>
   
@@ -78,7 +78,7 @@
   <modal id="description-modal" size-delta-x="80" size-delta-y="60" show-event="show-description" hide-event="hide">
     <vertical pref-width="80" pref-height="50" size-delta-y="-10" anchor-pos-y="5">
       <text-page id="description-scroller" size-delta-x="75" size-delta-y="50" anchor-pos-x="0" anchor-pos-y="0" />
-      <button ignore-layout="true" anchor-pos-x="0" anchor-pos-y="-28"
+      <action-button ignore-layout="true" anchor-pos-x="0" anchor-pos-y="-28"
               anchor-min-x="0.5" anchor-max-x="0.5" anchor-min-y="0.5" anchor-max-y="0.5"
               text="OK" pref-width="30" pref-height="8" on-click="close-submodal" />
     </vertical>
@@ -88,7 +88,7 @@
   <modal id="artwork-modal" size-delta-x="63" size-delta-y="72" show-event="show-artwork" hide-event="hide">
     <vertical horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
       <image id="artwork-image" pref-width="56" pref-height="56" preserve-aspect="true" />
-      <button text="OK" pref-width="30" pref-height="8" on-click="close-submodal" />
+      <action-button text="OK" pref-width="30" pref-height="8" on-click="close-submodal" />
     </vertical>
   </modal>
 </bg>

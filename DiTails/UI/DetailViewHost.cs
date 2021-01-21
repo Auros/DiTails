@@ -37,6 +37,7 @@ namespace DiTails.UI
         private readonly LevelDataService _levelDataService;
         private readonly IPlatformUserModel _platformUserModel;
         private readonly DetailContextManager _detailContextManager;
+        public static readonly FieldAccessor<ImageView, float>.Accessor IMAGESKEW = FieldAccessor<ImageView, float>.GetAccessor("_skew");
 
         #region Initialization 
 
@@ -91,6 +92,26 @@ namespace DiTails.UI
                     {
                         descriptionModalTransform.gameObject.name = "DiTailsDescriptionModal";
                         artworkModalTransform.gameObject.name = "DiTailsArtworkModal";
+                    }
+                    if (panel1Transform != null)
+                    {
+                        foreach (var button in panel1Transform.GetComponentsInChildren<UnityEngine.UI.Button>(true))
+                        {
+                            foreach (var image in button.GetComponentsInChildren<ImageView>(true))
+                            {
+                                var view = image;
+                                IMAGESKEW(ref view) = 0f;
+                                image.SetVerticesDirty();
+                            }
+                            foreach (var text in button.GetComponentsInChildren<TMP_Text>(true))
+                            {
+                                text.alignment = TextAlignmentOptions.Center;
+                                if (text.fontStyle.HasFlag(FontStyles.Italic))
+                                {
+                                    text.fontStyle -= FontStyles.Italic;
+                                }
+                            }
+                        }
                     }
                     _siraLog.Debug("Parsing Complete");
                     _didParse = true;
@@ -167,6 +188,7 @@ namespace DiTails.UI
             Author = difficultyBeatmap.level.songAuthorName;
             _activeBeatSaverMap = map;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCustomLevel)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOST)));
         }
 
         private void SetRating(float value)
@@ -288,6 +310,9 @@ namespace DiTails.UI
 
         [UIValue("custom-level")]
         protected bool IsCustomLevel => _activeBeatSaverMap != null;
+
+        [UIValue("ost")]
+        protected bool IsOST => !IsCustomLevel;
 
         private bool _canVote = false;
         [UIValue("can-vote")]
@@ -468,7 +493,9 @@ namespace DiTails.UI
         [UIComponent("voting-downvote-image")]
         protected ClickableImage? votingDownvoteImage;
 
-        #endregion
+        [UIComponent("panel-1-root")]
+        protected RectTransform? panel1Transform;
 
+        #endregion
     }
 }
