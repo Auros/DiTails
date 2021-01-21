@@ -6,8 +6,8 @@ using SiraUtil;
 using System.IO;
 using UnityEngine;
 using IPA.Utilities;
-using BeatSaverSharp;
 using SiraUtil.Tools;
+using Newtonsoft.Json;
 using System.Threading;
 using DiTails.Managers;
 using DiTails.Utilities;
@@ -27,11 +27,12 @@ namespace DiTails.UI
 
         private bool _didParse;
         private bool _didSetupVote;
-        private Beatmap? _activeBeatSaverMap;
+        private string? _bsmlContent;
+        private Beatmap.Beatmap? _activeBeatSaverMap;
         private CancellationTokenSource _cts;
         private IDifficultyBeatmap? _activeBeatmap;
 
-        private string? _bsmlContent;
+        private readonly Http _http;
         private readonly SiraLog _siraLog;
         private readonly LevelDataService _levelDataService;
         private readonly IPlatformUserModel _platformUserModel;
@@ -39,8 +40,9 @@ namespace DiTails.UI
 
         #region Initialization 
 
-        public DetailViewHost(SiraLog siraLog, LevelDataService levelDataService, IPlatformUserModel platformUserModel, DetailContextManager detailContextManager)
+        public DetailViewHost(Http http, SiraLog siraLog, LevelDataService levelDataService, IPlatformUserModel platformUserModel, DetailContextManager detailContextManager)
         {
+            _http = http;
             _siraLog = siraLog;
             _levelDataService = levelDataService;
             _platformUserModel = platformUserModel;
@@ -178,34 +180,19 @@ namespace DiTails.UI
 
         protected async Task Vote(bool upvote)
         {
-            var info = await _platformUserModel.GetUserInfo();
             CanVote = false;
-            try
+
+            if (_activeBeatSaverMap != null)
             {
                 VoteLoading = true;
-                var ticket = await _platformUserModel.GetUserAuthToken();
-                if (_activeBeatSaverMap != null && ticket != null)
-                {
-                    _siraLog.Debug("Starting Vote...");
-                    var ticketBytes = Utils.StringToByteArray(ticket.Replace("-", ""));
-                    if (upvote)
-                    {
-                        await _activeBeatSaverMap.VoteUp(info.platformUserId, ticketBytes);
-                    }
-                    else
-                    {
-                        await _activeBeatSaverMap.VoteDown(info.platformUserId, ticketBytes);
-                    }
-                    _siraLog.Debug($"Voted. Upvote? ({upvote})");
-                    Votes = (_activeBeatSaverMap.Stats.UpVotes + -_activeBeatSaverMap.Stats.DownVotes).ToString();
-                    SetRating(_activeBeatSaverMap.Stats.Rating);
-                }
+                _activeBeatSaverMap = await _levelDataService.Vote(_activeBeatSaverMap, upvote, token: _cts.Token);
+                Votes = (_activeBeatSaverMap.Stats.UpVotes + -_activeBeatSaverMap.Stats.DownVotes).ToString();
+                SetRating(_activeBeatSaverMap.Stats.Rating);
+
                 VoteLoading = false;
             }
-            catch (Exception e)
-            {
-                _siraLog.Error(e.Message);
-            }
+
+            var info = await _platformUserModel.GetUserInfo();
             CanVote = info.platform == UserInfo.Platform.Steam || info.platform == UserInfo.Platform.Test;
         }
 
@@ -482,5 +469,6 @@ namespace DiTails.UI
         protected ClickableImage? votingDownvoteImage;
 
         #endregion
+
     }
 }

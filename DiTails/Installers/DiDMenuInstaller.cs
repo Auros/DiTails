@@ -27,6 +27,8 @@ namespace DiTails.Installers
                 false
 #endif
                 );
+
+            Container.Bind<Http>().AsSingle();
             Container.BindInterfacesAndSelfTo<DetailViewHost>().AsSingle();
             Container.BindInterfacesAndSelfTo<LevelDataService>().AsSingle();
             Container.BindInterfacesAndSelfTo<DetailContextManager>().AsSingle();

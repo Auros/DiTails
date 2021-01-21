@@ -19,6 +19,9 @@ namespace DiTails
         public Plugin(IPALogger logger, Zenjector zenjector, PluginMetadata metadata)
         {
             Log = logger;
+            zenjector
+                .On<PCAppInit>()
+                .Pseudo(Container => Container.BindInstance(new UBinder<Plugin, PluginMetadata>(metadata)));
 
             // Register our Installer
             zenjector.OnMenu<DiDMenuInstaller>()
