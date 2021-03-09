@@ -75,9 +75,9 @@
   </modal>
   
   <!--Description View-->
-  <modal id="description-modal" size-delta-x="80" size-delta-y="60" show-event="show-description" hide-event="hide">
+  <modal id="description-modal" size-delta-x="80" size-delta-y="65" show-event="show-description" hide-event="hide">
     <vertical pref-width="80" pref-height="50" size-delta-y="-10" anchor-pos-y="5">
-      <text-page id="description-scroller" size-delta-x="75" size-delta-y="50" anchor-pos-x="0" anchor-pos-y="0" />
+      <text-page id="description-scroller" size-delta-x="75" size-delta-y="45" anchor-pos-x="0" anchor-pos-y="0" />
       <action-button ignore-layout="true" anchor-pos-x="0" anchor-pos-y="-28"
               anchor-min-x="0.5" anchor-max-x="0.5" anchor-min-y="0.5" anchor-max-y="0.5"
               text="OK" pref-width="30" pref-height="8" on-click="close-submodal" />

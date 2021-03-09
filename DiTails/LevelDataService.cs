@@ -64,7 +64,7 @@ namespace DiTails
                 var ticket = await _platformUserModel.GetUserAuthToken();
 
                 _siraLog.Debug("Starting Vote...");
-                var ticketBytes = Utils.StringToByteArray(ticket.Replace("-", ""));
+                var ticketBytes = Utils.StringToByteArray(ticket.token.Replace("-", ""));
 
                 var response = await _http.PostAsync(
                     $"https://beatsaver.com/api/vote/steam/{beatmap.Key}",

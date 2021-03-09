@@ -79,7 +79,14 @@ namespace DiTails.UI
                 if (!string.IsNullOrWhiteSpace(_bsmlContent))
                 {
                     _siraLog.Debug("Parsing Details");
-                    BSMLParser.instance.Parse(_bsmlContent, standardLevelDetailViewController.gameObject, this);
+                    try
+                    {
+                        BSMLParser.instance.Parse(_bsmlContent, standardLevelDetailViewController.gameObject, this);
+                    }
+                    catch (Exception e)
+                    {
+                        _siraLog.Logger.Critical(e);
+                    }
                     if (rootTransform != null && mainModalTransform != null)
                     {
                         rootTransform.gameObject.name = "DiTailsDetailView";
@@ -267,7 +274,7 @@ namespace DiTails.UI
             {
                 textPageScrollView.SetText(_activeBeatSaverMap.Description ?? "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description"));
                 await SiraUtil.Utilities.PauseChamp;
-                textPageScrollView.SetDestinationPosY(0);
+                textPageScrollView.SetDestinationPos(0);
                 textPageScrollView.ScrollTo(0, false);
                 textPageScrollView.RefreshButtons();
                 textPageScrollView.SetText(_activeBeatSaverMap.Description ?? "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description"));
