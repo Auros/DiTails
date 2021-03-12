@@ -3,13 +3,13 @@
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <OutputType>Library</OutputType>
-        <LangVersion>9</LangVersion>
+        <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <LocalRefsDir Condition="Exists('..\Refs')">..\Refs</LocalRefsDir>
         <BeatSaberDir>$(LocalRefsDir)</BeatSaberDir>
         <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
-        <Copyright>Copyright © Auros 2020</Copyright>
+        <Copyright>Copyright © Auros 2021</Copyright>
         <AssemblyName>DiTails</AssemblyName>
         <ModVersion>1.0.0</ModVersion>
         <AssemblyVersion>$(ModVersion)</AssemblyVersion>
@@ -44,7 +44,7 @@
           <Private>False</Private>
         </Reference>
         <Reference Include="Newtonsoft.Json">
-          <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Libs\Newtonsoft.Json.dll</HintPath>
+          <HintPath>$(BeatSaberDir)\Libs\Newtonsoft.Json.dll</HintPath>
           <Private>False</Private>
         </Reference>
         <Reference Include="SemVer">
