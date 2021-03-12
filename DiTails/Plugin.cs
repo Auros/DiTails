@@ -4,13 +4,14 @@ using SiraUtil;
 using IPA.Loader;
 using SiraUtil.Zenject;
 using DiTails.Installers;
+using SiraUtil.Attributes;
 using IPALogger = IPA.Logging.Logger;
 using BeatSaberMarkupLanguage.Components;
 using Accessors = DiTails.Utilities.Accessors;
 
 namespace DiTails
 {
-    [Plugin(RuntimeOptions.DynamicInit)]
+    [Plugin(RuntimeOptions.DynamicInit), Slog]
     public class Plugin
     {
         internal static IPALogger? Log { get; private set; }

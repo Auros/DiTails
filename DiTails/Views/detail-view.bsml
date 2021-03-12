@@ -19,15 +19,15 @@
       <!--Panel 2-->
       <vertical pref-width="50" pref-height="45" horizontal-fit="PreferredSize" vertical-fit="PreferredSize" pad="1">
         <vertical child-align="UpperCenter" horizontal-fit="PreferredSize" vertical-fit="PreferredSize">
-          <image src="DiTails.Resources.logo.png" pref-width="40" pref-height="10" preserve-aspect="true" />
+          <image src="DiTails.Resources.logo.png" pref-width="30" pref-height="10" preserve-aspect="true" />
           <text active="~custom-level" text="~key" align="TopJustified" font-size="3" />
           <text text="~author" align="TopJustified" font-size="3" />
           <text active="~custom-level" text="~mapper" align="TopJustified" font-size="3" />
           <text active="~custom-level" text="~uploaded" align="TopJustified" font-size="3" />
           <text active="~custom-level" text="~downloads" align="TopJustified" font-size="3" />
         </vertical>
-        <horizontal pref-height="12">
-          <action-button id="main-ok-button" text="OK" event-click="hide" pref-width="30" pref-height="12" />
+        <horizontal pref-height="9.5">
+          <action-button id="main-ok-button" text="OK" event-click="hide" pref-width="30" pref-height="9.5" />
         </horizontal>
       </vertical>
 

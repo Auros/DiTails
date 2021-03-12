@@ -20,13 +20,7 @@ namespace DiTails.Installers
 
         public override void InstallBindings()
         {
-            Container.BindLoggerAsSiraLogger(_logger,
-                #if DEBUG
-                true
-#else
-                false
-#endif
-                );
+            Container.BindLoggerAsSiraLogger(_logger);
 
             Container.Bind<Http>().AsSingle();
             Container.BindInterfacesAndSelfTo<DetailViewHost>().AsSingle();

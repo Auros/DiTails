@@ -108,7 +108,5 @@ namespace DiTails
             Up = 1,
             Down = -1
         }
-
-
     }
 }
