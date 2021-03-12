@@ -5,7 +5,7 @@
   "author": "Auros",
   "version": "0.1.2",
   "description": "View extra details about a map!",
-  "gameVersion": "1.13.4",
+  "gameVersion": "1.13.5",
   "dependsOn": {
     "BSIPA": "^4.0.0",
     "SiraUtil": "^2.4.0",
