@@ -46,7 +46,7 @@
         <vertical active="~vote-loading" pref-height="25" pad="2">
           <loading pref-width="11" pref-height="11" preserve-aspect="true" />
         </vertical>
-        <vertical pref-height="10" pad="1">
+        <vertical pref-height="11" pad="1" vertical-fit="PreferredSize">
           <text text="Rating" font-size="3" align="Center" />
           <text id="rating" text="91%" font-size="7" font-color="green" align="Center" />
         </vertical>
