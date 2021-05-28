@@ -1,9 +1,11 @@
 using System;
-using Zenject;
-using SiraUtil.Tools;
-using DiTails.Utilities;
-using UnityEngine.EventSystems;
 using BeatSaberMarkupLanguage.Components;
+using HMUI;
+using SiraUtil;
+using SiraUtil.Tools;
+using UnityEngine.EventSystems;
+using Zenject;
+using Accessors = DiTails.Utilities.Accessors;
 
 namespace DiTails.Managers
 {
@@ -23,10 +25,14 @@ namespace DiTails.Managers
             _siraLog = siraLog;
             _standardLevelDetailViewController = standardLevelDetailViewController;
 
-            // Let's ref the image that we already upgraded in our Zenjector
-            var detailView = Accessors.DetailView(ref _standardLevelDetailViewController);
+            var detailView = Accessors.DetailView(ref standardLevelDetailViewController);
             var levelBar = Accessors.LevelBar(ref detailView);
-            _artworkImage = (ClickableImage)Accessors.Artwork(ref levelBar);
+            var artwork = Accessors.Artwork(ref levelBar);
+
+            // Upgrade the ImageView
+            var clickable = artwork.Upgrade<ImageView, ClickableImage>();
+            Accessors.Artwork(ref levelBar) = clickable;
+            _artworkImage = clickable;
         }
 
         public void Initialize()
