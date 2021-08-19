@@ -1,8 +1,8 @@
-using SemVer;
 using Zenject;
 using SiraUtil;
 using DiTails.UI;
 using IPA.Logging;
+using Hive.Versioning;
 using DiTails.Managers;
 
 namespace DiTails.Installers
@@ -22,7 +22,6 @@ namespace DiTails.Installers
         {
             Container.BindLoggerAsSiraLogger(_logger);
 
-            Container.Bind<Http>().AsSingle();
             Container.BindInterfacesAndSelfTo<DetailViewHost>().AsSingle();
             Container.BindInterfacesAndSelfTo<LevelDataService>().AsSingle();
             Container.BindInterfacesAndSelfTo<DetailContextManager>().AsSingle();

@@ -3,12 +3,13 @@
   "id": "DiTails",
   "name": "DiTails",
   "author": "Auros",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "View extra details about a map!",
-  "gameVersion": "1.16.3",
+  "gameVersion": "1.16.4",
   "dependsOn": {
-    "BSIPA": "^4.0.0",
+    "BSIPA": "^4.2.0",
     "SiraUtil": "^2.4.0",
+    "BeatSaverSharp": "^3.0.1",
     "BeatSaberMarkupLanguage": "^1.4.1"
   }
 }

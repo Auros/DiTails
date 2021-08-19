@@ -18,6 +18,7 @@ using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
+using BeatSaverSharp.Models;
 
 namespace DiTails.UI
 {
@@ -28,7 +29,7 @@ namespace DiTails.UI
         private bool _didParse;
         private bool _didSetupVote;
         private string? _bsmlContent;
-        private Beatmap.Beatmap? _activeBeatSaverMap;
+        private Beatmap? _activeBeatSaverMap;
         private CancellationTokenSource _cts;
         private IDifficultyBeatmap? _activeBeatmap;
 
@@ -184,12 +185,12 @@ namespace DiTails.UI
             ShowPanel = true;
             if (map != null)
             {
-                Key = map.Key;
-                Mapper = difficultyBeatmap.level.levelAuthorName ?? map.Uploader.Username ?? "Unknown";
+                Key = map.ID;
+                Mapper = difficultyBeatmap.level.levelAuthorName ?? map.Uploader.Name ?? "Unknown";
                 Uploaded = map.Uploaded.ToString("MMMM dd, yyyy");
                 Downloads = map.Stats.Downloads.ToString();
-                Votes = (map.Stats.UpVotes + -map.Stats.DownVotes).ToString();
-                SetRating(map.Stats.Rating);
+                Votes = (map.Stats.Upvotes + -map.Stats.Downvotes).ToString();
+                SetRating(map.Stats.Score);
             }
             Author = difficultyBeatmap.level.songAuthorName;
             _activeBeatSaverMap = map;
@@ -214,14 +215,14 @@ namespace DiTails.UI
             {
                 VoteLoading = true;
                 _activeBeatSaverMap = await _levelDataService.Vote(_activeBeatSaverMap, upvote, token: _cts.Token);
-                Votes = (_activeBeatSaverMap.Stats.UpVotes + -_activeBeatSaverMap.Stats.DownVotes).ToString();
-                SetRating(_activeBeatSaverMap.Stats.Rating);
+                Votes = (_activeBeatSaverMap.Stats.Upvotes + -_activeBeatSaverMap.Stats.Downvotes).ToString();
+                SetRating(_activeBeatSaverMap.Stats.Score);
 
                 VoteLoading = false;
             }
 
             var info = await _platformUserModel.GetUserInfo();
-            CanVote = info.platform == UserInfo.Platform.Steam || info.platform == UserInfo.Platform.Test;
+            CanVote = info.platform == UserInfo.Platform.Steam || info.platform == UserInfo.Platform.Test || info.platform == UserInfo.Platform.Oculus;
         }
 
         #endregion
@@ -247,7 +248,7 @@ namespace DiTails.UI
             await SiraUtil.Utilities.PauseChamp;
             if (_activeBeatSaverMap != null)
             {
-                URL = $"https://beatsaver.com/beatmap/{_activeBeatSaverMap.Key}";
+                URL = $"https://beatsaver.com/maps/{_activeBeatSaverMap.ID}";
             }
             parserParams?.EmitEvent("show-open-url");
         }

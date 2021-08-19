@@ -21,7 +21,7 @@ namespace DiTails
                 .Pseudo(Container => Container.BindInstance(new UBinder<Plugin, PluginMetadata>(metadata)));
 
             // Register our Installer
-            zenjector.OnMenu<DiDMenuInstaller>().WithParameters(logger, metadata.Version);
+            zenjector.OnMenu<DiDMenuInstaller>().WithParameters(logger, metadata.HVersion);
         }
 
         [OnEnable]

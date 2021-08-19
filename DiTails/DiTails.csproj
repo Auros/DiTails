@@ -11,7 +11,6 @@
         <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
         <Copyright>Copyright © Auros 2021</Copyright>
         <AssemblyName>DiTails</AssemblyName>
-        <ModVersion>1.0.0</ModVersion>
         <AssemblyVersion>$(ModVersion)</AssemblyVersion>
         <FileVersion>$(ModVersion)</FileVersion>
         <InformationalVersion>$(ModVersion)</InformationalVersion>
@@ -39,6 +38,14 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <Reference Include="BeatSaverSharp">
+          <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Libs\BeatSaverSharp.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Hive.Versioning">
+          <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Libs\Hive.Versioning.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
         <Reference Include="MediaLoader">
           <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\MediaLoader.dll</HintPath>
           <Private>False</Private>
