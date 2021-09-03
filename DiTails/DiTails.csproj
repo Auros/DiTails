@@ -39,11 +39,11 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <Reference Include="BeatSaverSharp">
-          <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Libs\BeatSaverSharp.dll</HintPath>
+          <HintPath>$(BeatSaberDir)\Libs\BeatSaverSharp.dll</HintPath>
           <Private>False</Private>
         </Reference>
         <Reference Include="Hive.Versioning">
-          <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Libs\Hive.Versioning.dll</HintPath>
+          <HintPath>$(BeatSaberDir)\Libs\Hive.Versioning.dll</HintPath>
           <Private>False</Private>
         </Reference>
         <Reference Include="MediaLoader">

@@ -3,9 +3,9 @@
   "id": "DiTails",
   "name": "DiTails",
   "author": "Auros",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "View extra details about a map!",
-  "gameVersion": "1.16.4",
+  "gameVersion": "1.17.0",
   "dependsOn": {
     "BSIPA": "^4.2.0",
     "SiraUtil": "^2.4.0",
