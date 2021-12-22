@@ -1,24 +1,23 @@
-using HMUI;
-using TMPro;
-using System;
-using Zenject;
-using SiraUtil;
-using System.IO;
-using System.Linq;
-using UnityEngine;
-using IPA.Utilities;
-using SiraUtil.Tools;
-using System.Threading;
-using DiTails.Managers;
-using DiTails.Utilities;
-using System.Reflection;
-using System.ComponentModel;
-using System.Threading.Tasks;
 using BeatSaberMarkupLanguage;
-using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
+using BeatSaberMarkupLanguage.Parser;
 using BeatSaverSharp.Models;
+using DiTails.Managers;
+using DiTails.Utilities;
+using HMUI;
+using IPA.Utilities;
+using SiraUtil.Logging;
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using TMPro;
+using UnityEngine;
+using Zenject;
 
 namespace DiTails.UI
 {
@@ -67,7 +66,7 @@ namespace DiTails.UI
             if (!_didParse)
             {
                 var info = await _platformUserModel.GetUserInfo();
-                CanVote = info.platform == UserInfo.Platform.Steam || info.platform == UserInfo.Platform.Test;
+                CanVote = true;
 
                 _siraLog.Debug("Doing Initial BSML Parsing of the Detail View");
                 _siraLog.Debug("Getting Manifest Stream");
@@ -86,7 +85,7 @@ namespace DiTails.UI
                     }
                     catch (Exception e)
                     {
-                        _siraLog.Logger.Critical(e);
+                        _siraLog.Critical(e);
                     }
                     if (rootTransform != null && mainModalTransform != null)
                     {
@@ -188,7 +187,6 @@ namespace DiTails.UI
                 Key = map.ID;
                 Mapper = difficultyBeatmap.level.levelAuthorName ?? map.Uploader.Name ?? "Unknown";
                 Uploaded = map.Uploaded.ToString("MMMM dd, yyyy");
-                Downloads = map.Stats.Downloads.ToString();
                 Votes = (map.Stats.Upvotes + -map.Stats.Downvotes).ToString();
                 SetRating(map.Stats.Score);
             }
@@ -245,7 +243,7 @@ namespace DiTails.UI
         protected async Task ViewOpenBeatSaverURL()
         {
             parserParams?.EmitEvent("hide");
-            await SiraUtil.Utilities.PauseChamp;
+            await SiraUtil.Extras.Utilities.PauseChamp;
             if (_activeBeatSaverMap != null)
             {
                 URL = $"https://beatsaver.com/maps/{_activeBeatSaverMap.ID}";
@@ -257,7 +255,7 @@ namespace DiTails.UI
         protected async Task ViewLevelHash()
         {
             parserParams?.EmitEvent("hide");
-            await SiraUtil.Utilities.PauseChamp;
+            await SiraUtil.Extras.Utilities.PauseChamp;
             if (_activeBeatmap != null)
             {
                 Hash = _activeBeatmap.level.levelID.Replace("custom_level_", "");
@@ -269,16 +267,16 @@ namespace DiTails.UI
         protected async Task ViewDescription()
         {
             parserParams?.EmitEvent("hide");
-            await SiraUtil.Utilities.PauseChamp;
+            await SiraUtil.Extras.Utilities.PauseChamp;
             parserParams?.EmitEvent("show-description");
             if (_activeBeatSaverMap != null && textPageScrollView != null)
             {
-                textPageScrollView.SetText(_activeBeatSaverMap.Description ?? "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description"));
-                await SiraUtil.Utilities.PauseChamp;
+                textPageScrollView.SetText(_activeBeatSaverMap.Description ?? "No Description");
+                await SiraUtil.Extras.Utilities.PauseChamp;
                 textPageScrollView.SetDestinationPos(0);
                 textPageScrollView.ScrollTo(0, false);
                 textPageScrollView.RefreshButtons();
-                textPageScrollView.SetText(_activeBeatSaverMap.Description ?? "DITAILS_NODESCRIPTION".LocalizationGetOr("No Description"));
+                textPageScrollView.SetText(_activeBeatSaverMap.Description ?? "No Description");
             }
         }
 
@@ -292,7 +290,7 @@ namespace DiTails.UI
                 coverImage.texture.wrapMode = TextureWrapMode.Clamp;
                 artworkImage.sprite = coverImage;
             }
-            await SiraUtil.Utilities.PauseChamp;
+            await SiraUtil.Extras.Utilities.PauseChamp;
             parserParams?.EmitEvent("show-artwork");
         }
 
@@ -300,7 +298,7 @@ namespace DiTails.UI
         protected async Task Close()
         {
             parserParams?.EmitEvent("hide");
-            await SiraUtil.Utilities.PauseChamp;
+            await SiraUtil.Extras.Utilities.PauseChamp;
             parserParams?.EmitEvent("show-detail");
         }
 
@@ -368,7 +366,7 @@ namespace DiTails.UI
             get => _key;
             set
             {
-                _key = string.Join(" | ", "DITAILS_KEY".LocalizationGetOr("Key"), value);
+                _key = string.Join(" | ", "Key", value);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Key)));
             }
         }
@@ -380,7 +378,7 @@ namespace DiTails.UI
             get => _author;
             set
             {
-                _author = string.Join(" | ", "DITAILS_AUTHOR".LocalizationGetOr("Author"), value);
+                _author = string.Join(" | ", "Author", value);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Author)));
             }
         }
@@ -392,7 +390,7 @@ namespace DiTails.UI
             get => _mapper;
             set
             {
-                _mapper = string.Join(" | ", "DITAILS_MAPPER".LocalizationGetOr("Mapper"), value);
+                _mapper = string.Join(" | ", "Mapper", value);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Mapper)));
             }
         }
@@ -404,20 +402,8 @@ namespace DiTails.UI
             get => _uploaded;
             set
             {
-                _uploaded = string.Join(" | ", "DITAILS_UPLOADED".LocalizationGetOr("Uploaded"), value);
+                _uploaded = string.Join(" | ", "Uploaded", value);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Uploaded)));
-            }
-        }
-
-        private string _downloads = "Downloads | 0";
-        [UIValue("downloads")]
-        protected string Downloads
-        {
-            get => _downloads;
-            set
-            {
-                _downloads = string.Join(" | ", "DITAILS_DOWNLOADS".LocalizationGetOr("Downloads"), value);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Downloads)));
             }
         }
 
@@ -434,7 +420,7 @@ namespace DiTails.UI
         }
 
         [UIValue("url")]
-        protected string URLView => string.Format("DITAILS_OPENURL".LocalizationGetOr("This will open <color=#1159cf>{0}</color> in your browser. Are you sure?"), new Uri(URL).Host);
+        protected string URLView => string.Format("This will open <color=#1159cf>{0}</color> in your browser. Are you sure?", new Uri(URL).Host);
 
         private string _url = "https://google.com";
         protected string URL
@@ -448,7 +434,7 @@ namespace DiTails.UI
             }
         }
 
-        private string _hash = "DITAILS_NOHASH".LocalizationGetOr("No Level Hash");
+        private string _hash = "No Level Hash";
         [UIValue("hash")]
         protected string Hash
         {

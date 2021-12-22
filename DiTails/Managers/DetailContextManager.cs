@@ -1,8 +1,7 @@
-using System;
 using BeatSaberMarkupLanguage.Components;
+using DiTails.Utilities;
 using HMUI;
-using SiraUtil;
-using SiraUtil.Tools;
+using System;
 using UnityEngine.EventSystems;
 using Zenject;
 using Accessors = DiTails.Utilities.Accessors;
@@ -11,7 +10,6 @@ namespace DiTails.Managers
 {
     internal sealed class DetailContextManager : IInitializable, IDisposable
     {
-        private readonly SiraLog _siraLog;
         private readonly ClickableImage _artworkImage;
         private readonly StandardLevelDetailViewController _standardLevelDetailViewController;
 
@@ -20,9 +18,8 @@ namespace DiTails.Managers
 
         #region Initialization
 
-        internal DetailContextManager(SiraLog siraLog, StandardLevelDetailViewController standardLevelDetailViewController)
+        internal DetailContextManager(StandardLevelDetailViewController standardLevelDetailViewController)
         {
-            _siraLog = siraLog;
             _standardLevelDetailViewController = standardLevelDetailViewController;
 
             var detailView = Accessors.DetailView(ref standardLevelDetailViewController);

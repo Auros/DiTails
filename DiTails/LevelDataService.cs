@@ -1,11 +1,11 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using BeatSaverSharp;
 using BeatSaverSharp.Models;
 using IPA.Loader;
-using SiraUtil.Tools;
+using SiraUtil.Logging;
 using SiraUtil.Zenject;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Zenject;
 
 namespace DiTails
@@ -56,12 +56,17 @@ namespace DiTails
                 }
 
                 var info = await _platformUserModel.GetUserInfo();
-                var ticket = (await _platformUserModel.GetUserAuthToken()).token;
+                var authToken = await _platformUserModel.GetUserAuthToken();
+                var ticket = authToken.token;
 
                 _siraLog.Debug("Starting Vote...");
                 if (steam)
                 {
                     ticket = ticket.Replace("-", "");
+                }
+                else
+                {
+                    ticket = authToken.token;
                 }
 
                 var response = await beatmap.LatestVersion.Vote(upvote ? BeatSaverSharp.Models.Vote.Type.Upvote : BeatSaverSharp.Models.Vote.Type.Downvote,
