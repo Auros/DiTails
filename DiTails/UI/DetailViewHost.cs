@@ -65,7 +65,7 @@ namespace DiTails.UI
         {
             if (!_didParse)
             {
-                var info = await _platformUserModel.GetUserInfo();
+                var info = await _platformUserModel.GetUserInfo(CancellationToken.None);
                 CanVote = true;
 
                 _siraLog.Debug("Doing Initial BSML Parsing of the Detail View");
@@ -131,8 +131,8 @@ namespace DiTails.UI
             {
                 if (votingUpvoteImage != null && votingDownvoteImage != null)
                 {
-                    votingUpvoteImage.SetImage("DiTails.Resources.arrow.png");
-                    votingDownvoteImage.SetImage("DiTails.Resources.arrow.png");
+                    votingUpvoteImage.SetImageAsync("DiTails.Resources.arrow.png");
+                    votingDownvoteImage.SetImageAsync("DiTails.Resources.arrow.png");
                     votingUpvoteImage.DefaultColor = new Color(0.388f, 1f, 0.388f);
                     votingDownvoteImage.DefaultColor = new Color(1f, 0.188f, 0.188f);
 
@@ -219,7 +219,7 @@ namespace DiTails.UI
                 VoteLoading = false;
             }
 
-            var info = await _platformUserModel.GetUserInfo();
+            var info = await _platformUserModel.GetUserInfo(CancellationToken.None);
             CanVote = info.platform == UserInfo.Platform.Steam || info.platform == UserInfo.Platform.Test || info.platform == UserInfo.Platform.Oculus;
         }
 
