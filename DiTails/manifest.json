@@ -3,7 +3,7 @@
   "id": "DiTails",
   "name": "DiTails",
   "author": "Auros",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "View extra details about a map!",
   "gameVersion": "1.34.0",
   "dependsOn": {

@@ -131,8 +131,8 @@ namespace DiTails.UI
             {
                 if (votingUpvoteImage != null && votingDownvoteImage != null)
                 {
-                    votingUpvoteImage.SetImageAsync("DiTails.Resources.arrow.png");
-                    votingDownvoteImage.SetImageAsync("DiTails.Resources.arrow.png");
+                    _ = votingUpvoteImage.SetImageAsync("DiTails.Resources.arrow.png");
+                    _ = votingDownvoteImage.SetImageAsync("DiTails.Resources.arrow.png");
                     votingUpvoteImage.DefaultColor = new Color(0.388f, 1f, 0.388f);
                     votingDownvoteImage.DefaultColor = new Color(1f, 0.188f, 0.188f);
 
