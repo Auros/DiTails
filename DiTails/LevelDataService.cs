@@ -6,7 +6,7 @@ using SiraUtil.Zenject;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using SongCore.Utilities;
+using DiTails.Utilities;
 using Zenject;
 
 namespace DiTails
@@ -30,12 +30,10 @@ namespace DiTails
             _beatSaver.Dispose();
         }
 
-        internal async Task<Beatmap?> GetBeatmap(IDifficultyBeatmap difficultyBeatmap, CancellationToken token)
+        internal async Task<Beatmap?> GetBeatmap(BeatmapLevel level, CancellationToken token)
         {
-            var level = difficultyBeatmap.level;
-            if (level is CustomPreviewBeatmapLevel customLevel)
+            if (level.TryGetHash(out var hash))
             {
-                var hash = Hashing.GetCustomLevelHash(customLevel);
                 var beatmap = await _beatSaver.BeatmapByHash(hash, token);
                 return beatmap ?? null;
             }
@@ -48,17 +46,18 @@ namespace DiTails
             try
             {
                 bool steam = false;
-                if (_platformUserModel is SteamPlatformUserModel)
+                var info = await _platformUserModel.GetUserInfo(token);
+
+                if (info.platform == UserInfo.Platform.Steam)
                 {
                     steam = true;
                 }
-                else if (!(_platformUserModel is OculusPlatformUserModel))
+                else if (info.platform != UserInfo.Platform.Oculus)
                 {
                     _siraLog.Debug("Current platform cannot vote.");
                     return beatmap;
                 }
 
-                var info = await _platformUserModel.GetUserInfo(token);
                 var authToken = await _platformUserModel.GetUserAuthToken();
                 var ticket = authToken.token;
 

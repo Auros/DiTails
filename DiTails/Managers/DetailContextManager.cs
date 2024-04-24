@@ -14,7 +14,7 @@ namespace DiTails.Managers
         private readonly StandardLevelDetailViewController _standardLevelDetailViewController;
 
         internal event Action? BeatmapUnselected;
-        internal event Action<StandardLevelDetailViewController, IDifficultyBeatmap>? DetailMenuRequested;
+        internal event Action<StandardLevelDetailViewController, BeatmapLevel>? DetailMenuRequested;
 
         #region Initialization
 
@@ -50,7 +50,7 @@ namespace DiTails.Managers
 
         private void ArtworkImageClicked(PointerEventData pointerEventData)
         {
-            DetailMenuRequested?.Invoke(_standardLevelDetailViewController, _standardLevelDetailViewController.selectedDifficultyBeatmap);
+            DetailMenuRequested?.Invoke(_standardLevelDetailViewController, _standardLevelDetailViewController.beatmapLevel);
         }
 
         private void DetailViewDeactivated(bool removedFromHierarchy, bool screenSystemDisabling)
