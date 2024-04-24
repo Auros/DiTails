@@ -10,6 +10,7 @@
     "BSIPA": "^4.2.1",
     "SiraUtil": "^3.0.0",
     "BeatSaverSharp": "^3.0.1",
-    "BeatSaberMarkupLanguage": "^1.4.1"
+    "BeatSaberMarkupLanguage": "^1.4.1",
+    "SongCore": "^3.8.1"
   }
 }

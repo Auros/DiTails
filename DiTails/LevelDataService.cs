@@ -6,6 +6,7 @@ using SiraUtil.Zenject;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using SongCore.Utilities;
 using Zenject;
 
 namespace DiTails
@@ -31,13 +32,15 @@ namespace DiTails
 
         internal async Task<Beatmap?> GetBeatmap(IDifficultyBeatmap difficultyBeatmap, CancellationToken token)
         {
-            if (!difficultyBeatmap.level.levelID.Contains("custom_level_"))
+            var level = difficultyBeatmap.level;
+            if (level is CustomPreviewBeatmapLevel customLevel)
             {
-                return null;
+                var hash = Hashing.GetCustomLevelHash(customLevel);
+                var beatmap = await _beatSaver.BeatmapByHash(hash, token);
+                return beatmap ?? null;
             }
-            var hash = difficultyBeatmap.level.levelID.Replace("custom_level_", "");
-            var beatmap = await _beatSaver.BeatmapByHash(hash, token);
-            return beatmap ?? null;
+
+            return null;
         }
 
         internal async Task<Beatmap> Vote(Beatmap beatmap, bool upvote, CancellationToken token)

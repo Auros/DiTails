@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using SongCore.Utilities;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -258,7 +259,8 @@ namespace DiTails.UI
             await SiraUtil.Extras.Utilities.PauseChamp;
             if (_activeBeatmap != null)
             {
-                Hash = _activeBeatmap.level.levelID.Replace("custom_level_", "");
+                var level = _activeBeatmap.level;
+                Hash = level is CustomBeatmapLevel customLevel ? Hashing.GetCustomLevelHash(customLevel) : level.levelID;
             }
             parserParams?.EmitEvent("show-level-hash");
         }
