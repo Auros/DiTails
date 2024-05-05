@@ -65,7 +65,7 @@ namespace DiTails.UI
         {
             if (!_didParse)
             {
-                var info = await _platformUserModel.GetUserInfo();
+                var info = await _platformUserModel.GetUserInfo(_cts.Token);
                 CanVote = true;
 
                 _siraLog.Debug("Doing Initial BSML Parsing of the Detail View");
@@ -125,14 +125,14 @@ namespace DiTails.UI
             }
         }
 
-        private void SetupVotingButtons()
+        private async Task SetupVotingButtons()
         {
             if (!_didSetupVote)
             {
                 if (votingUpvoteImage != null && votingDownvoteImage != null)
                 {
-                    votingUpvoteImage.SetImage("DiTails.Resources.arrow.png");
-                    votingDownvoteImage.SetImage("DiTails.Resources.arrow.png");
+                    await votingUpvoteImage.SetImageAsync("DiTails.Resources.arrow.png");
+                    await votingDownvoteImage.SetImageAsync("DiTails.Resources.arrow.png");
                     votingUpvoteImage.DefaultColor = new Color(0.388f, 1f, 0.388f);
                     votingDownvoteImage.DefaultColor = new Color(1f, 0.188f, 0.188f);
 
@@ -176,7 +176,7 @@ namespace DiTails.UI
         {
             _activeBeatmap = difficultyBeatmap;
             await Parse(standardLevelDetailViewController);
-            SetupVotingButtons();
+            await SetupVotingButtons();
 
             ShowPanel = false;
             parserParams?.EmitEvent("show-detail");
@@ -219,7 +219,7 @@ namespace DiTails.UI
                 VoteLoading = false;
             }
 
-            var info = await _platformUserModel.GetUserInfo();
+            var info = await _platformUserModel.GetUserInfo(_cts.Token);
             CanVote = info.platform == UserInfo.Platform.Steam || info.platform == UserInfo.Platform.Test || info.platform == UserInfo.Platform.Oculus;
         }
 
