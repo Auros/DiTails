@@ -55,7 +55,7 @@ namespace DiTails
                     return beatmap;
                 }
 
-                var info = await _platformUserModel.GetUserInfo(CancellationToken.None);
+                var info = await _platformUserModel.GetUserInfo(token);
                 var authToken = await _platformUserModel.GetUserAuthToken();
                 var ticket = authToken.token;
 

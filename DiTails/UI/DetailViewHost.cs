@@ -65,7 +65,7 @@ namespace DiTails.UI
         {
             if (!_didParse)
             {
-                var info = await _platformUserModel.GetUserInfo(CancellationToken.None);
+                var info = await _platformUserModel.GetUserInfo(_cts.Token);
                 CanVote = true;
 
                 _siraLog.Debug("Doing Initial BSML Parsing of the Detail View");
@@ -219,7 +219,7 @@ namespace DiTails.UI
                 VoteLoading = false;
             }
 
-            var info = await _platformUserModel.GetUserInfo(CancellationToken.None);
+            var info = await _platformUserModel.GetUserInfo(_cts.Token);
             CanVote = info.platform == UserInfo.Platform.Steam || info.platform == UserInfo.Platform.Test || info.platform == UserInfo.Platform.Oculus;
         }
 
