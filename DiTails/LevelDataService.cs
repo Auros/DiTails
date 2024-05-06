@@ -6,6 +6,7 @@ using SiraUtil.Zenject;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DiTails.Utilities;
 using Zenject;
 
 namespace DiTails
@@ -29,15 +30,15 @@ namespace DiTails
             _beatSaver.Dispose();
         }
 
-        internal async Task<Beatmap?> GetBeatmap(IDifficultyBeatmap difficultyBeatmap, CancellationToken token)
+        internal async Task<Beatmap?> GetBeatmap(BeatmapLevel level, CancellationToken token)
         {
-            if (!difficultyBeatmap.level.levelID.Contains("custom_level_"))
+            if (level.TryGetHash(out var hash))
             {
-                return null;
+                var beatmap = await _beatSaver.BeatmapByHash(hash, token);
+                return beatmap ?? null;
             }
-            var hash = difficultyBeatmap.level.levelID.Replace("custom_level_", "");
-            var beatmap = await _beatSaver.BeatmapByHash(hash, token);
-            return beatmap ?? null;
+
+            return null;
         }
 
         internal async Task<Beatmap> Vote(Beatmap beatmap, bool upvote, CancellationToken token)
@@ -45,17 +46,18 @@ namespace DiTails
             try
             {
                 bool steam = false;
-                if (_platformUserModel is SteamPlatformUserModel)
+                var info = await _platformUserModel.GetUserInfo(token);
+
+                if (info.platform == UserInfo.Platform.Steam)
                 {
                     steam = true;
                 }
-                else if (!(_platformUserModel is OculusPlatformUserModel))
+                else if (info.platform != UserInfo.Platform.Oculus)
                 {
                     _siraLog.Debug("Current platform cannot vote.");
                     return beatmap;
                 }
 
-                var info = await _platformUserModel.GetUserInfo(token);
                 var authToken = await _platformUserModel.GetUserAuthToken();
                 var ticket = authToken.token;
 

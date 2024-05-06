@@ -50,6 +50,10 @@
 		  	<HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BGNet.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+		<Reference Include="DataModels">
+		  <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\DataModels.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
 		<Reference Include="Hive.Versioning">
 			<HintPath>$(BeatSaberDir)\Libs\Hive.Versioning.dll</HintPath>
 			<Private>False</Private>
@@ -59,7 +63,7 @@
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="PlatformUserModel">
-		  	<HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\PlatformUserModel.dll</HintPath>
+		  <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\PlatformUserModel.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="SemVer">
@@ -130,6 +134,10 @@
 		</Reference>
 		<Reference Include="SiraUtil">
 			<HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="SongCore">
+			<HintPath>$(BeatSaberDir)\Plugins\SongCore.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Zenject">

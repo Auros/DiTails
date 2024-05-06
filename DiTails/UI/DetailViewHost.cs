@@ -30,7 +30,7 @@ namespace DiTails.UI
         private string? _bsmlContent;
         private Beatmap? _activeBeatSaverMap;
         private CancellationTokenSource _cts;
-        private IDifficultyBeatmap? _activeBeatmap;
+        private BeatmapLevel? _activeBeatmap;
 
         private readonly SiraLog _siraLog;
         private readonly LevelDataService _levelDataService;
@@ -162,35 +162,35 @@ namespace DiTails.UI
             parserParams?.EmitEvent("hide");
         }
 
-        private void MenuRequested(StandardLevelDetailViewController standardLevelDetailViewController, IDifficultyBeatmap difficultyBeatmap)
+        private void MenuRequested(StandardLevelDetailViewController standardLevelDetailViewController, BeatmapLevel level)
         {
             _cts = new CancellationTokenSource();
-            _ = LoadMenu(standardLevelDetailViewController, difficultyBeatmap);
+            _ = LoadMenu(standardLevelDetailViewController, level);
         }
 
         #endregion
 
         #region Usage
 
-        private async Task LoadMenu(StandardLevelDetailViewController standardLevelDetailViewController, IDifficultyBeatmap difficultyBeatmap)
+        private async Task LoadMenu(StandardLevelDetailViewController standardLevelDetailViewController, BeatmapLevel beatmaplevel)
         {
-            _activeBeatmap = difficultyBeatmap;
+            _activeBeatmap = beatmaplevel;
             await Parse(standardLevelDetailViewController);
             await SetupVotingButtons();
 
             ShowPanel = false;
             parserParams?.EmitEvent("show-detail");
-            var map = await _levelDataService.GetBeatmap(difficultyBeatmap, _cts.Token);
+            var map = await _levelDataService.GetBeatmap(beatmaplevel, _cts.Token);
             ShowPanel = true;
             if (map != null)
             {
                 Key = map.ID;
-                Mapper = difficultyBeatmap.level.levelAuthorName ?? map.Uploader.Name ?? "Unknown";
+                Mapper = map.Uploader.Name ?? "Unknown";  //TODO use BeatmapLevel.allMappers and BeatmapLevel.allLighters ?
                 Uploaded = map.Uploaded.ToString("MMMM dd, yyyy");
                 Votes = (map.Stats.Upvotes + -map.Stats.Downvotes).ToString();
                 SetRating(map.Stats.Score);
             }
-            Author = difficultyBeatmap.level.songAuthorName;
+            Author = beatmaplevel.songAuthorName ?? "";
             _activeBeatSaverMap = map;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCustomLevel)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOST)));
@@ -258,7 +258,7 @@ namespace DiTails.UI
             await SiraUtil.Extras.Utilities.PauseChamp;
             if (_activeBeatmap != null)
             {
-                Hash = _activeBeatmap.level.levelID.Replace("custom_level_", "");
+                Hash = _activeBeatmap.TryGetHash(out var hash) ? hash : _activeBeatmap.levelID;
             }
             parserParams?.EmitEvent("show-level-hash");
         }
@@ -286,7 +286,7 @@ namespace DiTails.UI
             parserParams?.EmitEvent("hide");
             if (artworkImage != null && _activeBeatmap != null)
             {
-                var coverImage = await _activeBeatmap.level.GetCoverImageAsync(_cts.Token);
+                var coverImage = await _activeBeatmap.previewMediaData.GetCoverSpriteAsync(_cts.Token);
                 coverImage.texture.wrapMode = TextureWrapMode.Clamp;
                 artworkImage.sprite = coverImage;
             }
