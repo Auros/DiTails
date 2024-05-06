@@ -1,5 +1,6 @@
 using System.Reflection;
 using System;
+using SongCore.Utilities;
 using UnityEngine;
 
 namespace DiTails.Utilities
@@ -40,5 +41,16 @@ namespace DiTails.Utilities
             return upgradedMonoBehaviour;
         }
 
+        public static bool TryGetHash(this BeatmapLevel level, out string hash)
+        {
+            if (level.levelID.StartsWith("custom_level_"))
+            {
+                hash = Hashing.GetCustomLevelHash(level);
+                return true;
+            }
+
+            hash = "";
+            return false;
+        }
     }
 }
