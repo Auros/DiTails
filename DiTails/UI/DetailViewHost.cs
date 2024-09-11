@@ -81,7 +81,7 @@ namespace DiTails.UI
                     _siraLog.Debug("Parsing Details");
                     try
                     {
-                        BSMLParser.instance.Parse(_bsmlContent, standardLevelDetailViewController.gameObject, this);
+                        BSMLParser.Instance.Parse(_bsmlContent, standardLevelDetailViewController.gameObject, this);
                     }
                     catch (Exception e)
                     {
