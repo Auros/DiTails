@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFramework>netstandard2.1</TargetFramework>
 		<OutputType>Library</OutputType>
 		<LangVersion>8</LangVersion>
 		<Nullable>enable</Nullable>
@@ -42,12 +42,12 @@
 		    <PrivateAssets>all</PrivateAssets>
 		    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<Reference Include="BeatSaber.ViewSystem">
+			<HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BeatSaber.ViewSystem.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 		<Reference Include="BeatSaverSharp">
 			<HintPath>$(BeatSaberDir)\Libs\BeatSaverSharp.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="BGNet">
-		  	<HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BGNet.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="DataModels">
