@@ -286,7 +286,7 @@ namespace DiTails.UI
             parserParams?.EmitEvent("hide");
             if (artworkImage != null && _activeBeatmap != null)
             {
-                var coverImage = await _activeBeatmap.previewMediaData.GetCoverSpriteAsync(_cts.Token);
+                var coverImage = await _activeBeatmap.previewMediaData.GetCoverSpriteAsync();
                 coverImage.texture.wrapMode = TextureWrapMode.Clamp;
                 artworkImage.sprite = coverImage;
             }
