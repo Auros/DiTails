@@ -4,7 +4,7 @@
 * View Song Hash
 * View the BeatSaver description
 * Open the BeatSaver page in your browser
-* (Steam only) Vote in the menu!
+* Vote in the menu!
 
 
 # Click The Cover Art of a song!
