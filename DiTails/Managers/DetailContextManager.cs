@@ -10,7 +10,7 @@ namespace DiTails.Managers
 {
     internal sealed class DetailContextManager : IInitializable, IDisposable
     {
-        private readonly ClickableImage _artworkImage;
+        private ClickableImage? _artworkImage;
         private readonly StandardLevelDetailViewController _standardLevelDetailViewController;
 
         internal event Action? BeatmapUnselected;
@@ -21,19 +21,11 @@ namespace DiTails.Managers
         internal DetailContextManager(StandardLevelDetailViewController standardLevelDetailViewController)
         {
             _standardLevelDetailViewController = standardLevelDetailViewController;
-
-            var detailView = Accessors.DetailView(ref standardLevelDetailViewController);
-            var levelBar = Accessors.LevelBar(ref detailView);
-            var artwork = Accessors.Artwork(ref levelBar);
-
-            // Upgrade the ImageView
-            var clickable = artwork.Upgrade<ImageView, ClickableImage>();
-            Accessors.Artwork(ref levelBar) = clickable;
-            _artworkImage = clickable;
         }
 
         public void Initialize()
         {
+            _artworkImage = GetOrUpgradeArtworkImage();
             _artworkImage.OnClickEvent += ArtworkImageClicked;
             _standardLevelDetailViewController.didDeactivateEvent += DetailViewDeactivated;
             _standardLevelDetailViewController.didChangeContentEvent += DetailViewContentChanged;
@@ -41,7 +33,11 @@ namespace DiTails.Managers
 
         public void Dispose()
         {
-            _artworkImage.OnClickEvent -= ArtworkImageClicked;
+            if (_artworkImage != null)
+            {
+                _artworkImage.OnClickEvent -= ArtworkImageClicked;
+            }
+
             _standardLevelDetailViewController.didDeactivateEvent -= DetailViewDeactivated;
             _standardLevelDetailViewController.didChangeContentEvent -= DetailViewContentChanged;
         }
@@ -51,6 +47,23 @@ namespace DiTails.Managers
         private void ArtworkImageClicked(PointerEventData pointerEventData)
         {
             DetailMenuRequested?.Invoke(_standardLevelDetailViewController, _standardLevelDetailViewController.beatmapLevel);
+        }
+
+        private ClickableImage GetOrUpgradeArtworkImage()
+        {
+            var standardLevelDetailViewController = _standardLevelDetailViewController;
+            var detailView = Accessors.DetailView(ref standardLevelDetailViewController);
+            var levelBar = Accessors.LevelBar(ref detailView);
+            var artwork = Accessors.Artwork(ref levelBar);
+
+            if (artwork is ClickableImage clickable)
+            {
+                return clickable;
+            }
+
+            clickable = artwork.Upgrade<ImageView, ClickableImage>();
+            Accessors.Artwork(ref levelBar) = clickable;
+            return clickable;
         }
 
         private void DetailViewDeactivated(bool removedFromHierarchy, bool screenSystemDisabling)
